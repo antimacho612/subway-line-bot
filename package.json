@@ -2,7 +2,7 @@
   "name": "line-subway-bot",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "api/dist/index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn api/src/index.ts",
     "clean": "rimraf dist",
