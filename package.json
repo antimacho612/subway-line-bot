@@ -5,10 +5,10 @@
   "main": "api/dist/index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn api/src/index.ts",
+    "build": "npm-run-all clean tsc",
     "clean": "rimraf dist",
     "tsc": "tsc",
-    "build": "npm-run-all clean tsc",
-    "start": "npm run build && node ."
+    "start": "node ."
   },
   "keywords": [],
   "author": "",
