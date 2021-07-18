@@ -215,7 +215,7 @@ const bubbleTemplate = (data: SubwayStationTimetable): FlexBubble => ({
 
 export const subwayStationTimetableMessageTemplate = (dataArray: SubwayStationTimetable[]): FlexMessage => ({
   type: 'flex',
-  altText: dataArray.map(data => data.name).shift() ?? '',
+  altText: dataArray.map(data => data.name + 'からの').shift() ?? '' + '地下鉄発車時刻を送信しました',
   contents: {
     type: 'carousel',
     contents: dataArray.map(data => bubbleTemplate(data)),
