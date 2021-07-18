@@ -135,7 +135,7 @@ const mainContentTemplate = (timetable: Timetable) : FlexBox => ({
       contents: [
         {
           type: 'text',
-          text: timetable.arrivals.length === 0 ? '本日の運行は終了しています' : timetable.arrivals.map(a => formatNumTime(a.time) + (a.note ? `（※${ a.note }）` : '')).join('\n'),
+          text: timetable.arrivals.length === 0 ? '運行は終了しています' : timetable.arrivals.map(a => formatNumTime(a.time) + (a.note ? `（※${ a.note }）` : '')).join('\n'),
           color: '#666666',
           size: 'sm',
           margin: 'xl',
@@ -215,7 +215,7 @@ const bubbleTemplate = (data: SubwayStationTimetable): FlexBubble => ({
 
 export const subwayStationTimetableMessageTemplate = (dataArray: SubwayStationTimetable[]): FlexMessage => ({
   type: 'flex',
-  altText: 'This is a Subway Station Timetable Message',
+  altText: dataArray.map(data => data.name).shift() ?? '',
   contents: {
     type: 'carousel',
     contents: dataArray.map(data => bubbleTemplate(data)),
