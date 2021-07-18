@@ -24,7 +24,7 @@ const client = new Client(config);
 // Do routing
 // Testing Routing
 app.get('/', (_req: express.Request, res: express.Response): void => {
-  res.send('Hello World');
+  res.sendStatus(200);
 });
 
 // API Routing
