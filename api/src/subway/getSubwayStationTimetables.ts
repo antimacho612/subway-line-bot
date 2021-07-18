@@ -8,7 +8,7 @@ import { SubwayStationTimetable } from './message/templates/subwayStationTimetab
  * @param station 駅オブジェクト。
  * @param isWeekday 平日かどうか。
  */
-const getDiagrams = (station: Station, isWeekday: boolean) =>
+export const getDiagrams = (station: Station, isWeekday: boolean) =>
   (isWeekday ?
       timetables.filter(t => t.id === station.id).shift()?.weekday_diagrams
     : timetables.filter(t => t.id === station.id).shift()?.holiday_diagrams);

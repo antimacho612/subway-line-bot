@@ -1,6 +1,6 @@
 import { WebhookEvent, FlexMessage, TextMessage } from '@line/bot-sdk'
 import { zenkakuNum2HankakuNum, hankakuKana2Zenkakukana, katakana2Hiragana, isNotNullOrUndefined } from '../common/utils'
-import { stationNotFoundErrorMessage, notSupportedMessageTypeErrorMessage } from './message/templates/errorMessageTemplate'
+import { stationNotFoundErrorMessage } from './message/templates/errorMessageTemplate'
 import { Station, stations } from './data/stations'
 import { getSubwayStationTimetable } from './getSubwayStationTimetables'
 import { subwayStationTimetableMessageTemplate } from './message/templates/subwayStationTimetableMessageTemplate'
@@ -25,7 +25,6 @@ const specifyStationsByName = (name: string) => {
 }
 
 const specifyStationsById = (id: string) => {
-  console.log(id);
   return stations.filter(s => s.id === id);
 }
 
