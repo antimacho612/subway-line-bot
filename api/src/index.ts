@@ -48,5 +48,5 @@ app.post(
 
 // Start the server
 app.listen(PORT, (): void => {
-  console.log('http://localhost:3000');
+  console.log('Server is up on port ' + PORT);
 });
