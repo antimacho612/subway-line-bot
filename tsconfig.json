@@ -3,7 +3,7 @@
     "target": "ES6",
     "module": "commonjs",
     "sourceMap": true,
-    "outDir": "./api/dist",
+    "outDir": "./dist",
     "strict": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
@@ -11,5 +11,5 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["api/src/**/**/*"]
+  "include": ["src/**/**/*"]
 }
