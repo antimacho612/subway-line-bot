@@ -1,24 +1,31 @@
-interface Arrival {
+import { isWeekday } from "../utils";
+
+export type Arrival = {
   id: number;
   time: number;
   note?: string;
-}
+};
 
-interface Diagram {
+export type Diagram = {
   direction: string;
   arrivals: Arrival[];
-}
+};
 
-interface Timetable {
+export type Timetable = {
   id: string;
-  weekday_diagrams: Diagram[];
-  holiday_diagrams: Diagram[];
-}
+  weekdayDiagrams: Diagram[];
+  holidayDiagrams: Diagram[];
+};
 
-export const timetables: Timetable[] = [
+/**
+ * 時刻表
+ * https://www.city.sapporo.jp/st/time/
+ * より
+ */
+const TIMETABLES: Timetable[] = [
   {
     id: "N01",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "真駒内方面",
         arrivals: [
@@ -191,11 +198,11 @@ export const timetables: Timetable[] = [
           { id: 167, time: 2335 },
           { id: 168, time: 2343 },
           { id: 169, time: 2351 },
-          { id: 170, time: 2400, note: "最終" }
-        ]
+          { id: 170, time: 2400, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "真駒内方面",
         arrivals: [
@@ -348,14 +355,14 @@ export const timetables: Timetable[] = [
           { id: 147, time: 2335 },
           { id: 148, time: 2343 },
           { id: 149, time: 2351 },
-          { id: 150, time: 2400, note: "最終" }
-        ]
+          { id: 150, time: 2400, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "N02",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "麻生方面",
         arrivals: [
@@ -528,8 +535,8 @@ export const timetables: Timetable[] = [
           { id: 167, time: 2357 },
           { id: 168, time: 2407 },
           { id: 169, time: 2416 },
-          { id: 170, time: 2425, note: "最終" }
-        ]
+          { id: 170, time: 2425, note: "最終" },
+        ],
       },
       {
         direction: "真駒内方面",
@@ -703,11 +710,11 @@ export const timetables: Timetable[] = [
           { id: 167, time: 2337 },
           { id: 168, time: 2345 },
           { id: 169, time: 2353 },
-          { id: 170, time: 2402, note: "最終" }
-        ]
+          { id: 170, time: 2402, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "麻生方面",
         arrivals: [
@@ -860,8 +867,8 @@ export const timetables: Timetable[] = [
           { id: 147, time: 2357 },
           { id: 148, time: 2407 },
           { id: 149, time: 2416 },
-          { id: 150, time: 2425, note: "最終" }
-        ]
+          { id: 150, time: 2425, note: "最終" },
+        ],
       },
       {
         direction: "真駒内方面",
@@ -1015,14 +1022,14 @@ export const timetables: Timetable[] = [
           { id: 147, time: 2337 },
           { id: 148, time: 2345 },
           { id: 149, time: 2353 },
-          { id: 150, time: 2402, note: "最終" }
-        ]
+          { id: 150, time: 2402, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "N03",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "麻生方面",
         arrivals: [
@@ -1195,8 +1202,8 @@ export const timetables: Timetable[] = [
           { id: 167, time: 2355 },
           { id: 168, time: 2405 },
           { id: 169, time: 2414 },
-          { id: 170, time: 2423, note: "最終" }
-        ]
+          { id: 170, time: 2423, note: "最終" },
+        ],
       },
       {
         direction: "真駒内方面",
@@ -1370,11 +1377,11 @@ export const timetables: Timetable[] = [
           { id: 167, time: 2339 },
           { id: 168, time: 2347 },
           { id: 169, time: 2355 },
-          { id: 170, time: 2404, note: "最終" }
-        ]
+          { id: 170, time: 2404, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "麻生方面",
         arrivals: [
@@ -1527,8 +1534,8 @@ export const timetables: Timetable[] = [
           { id: 147, time: 2355 },
           { id: 148, time: 2405 },
           { id: 149, time: 2414 },
-          { id: 150, time: 2423, note: "最終" }
-        ]
+          { id: 150, time: 2423, note: "最終" },
+        ],
       },
       {
         direction: "真駒内方面",
@@ -1682,14 +1689,14 @@ export const timetables: Timetable[] = [
           { id: 147, time: 2339 },
           { id: 148, time: 2347 },
           { id: 149, time: 2355 },
-          { id: 150, time: 2404, note: "最終" }
-        ]
+          { id: 150, time: 2404, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "N04",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "麻生方面",
         arrivals: [
@@ -1862,8 +1869,8 @@ export const timetables: Timetable[] = [
           { id: 167, time: 2354 },
           { id: 168, time: 2403 },
           { id: 169, time: 2412 },
-          { id: 170, time: 2421, note: "最終" }
-        ]
+          { id: 170, time: 2421, note: "最終" },
+        ],
       },
       {
         direction: "真駒内方面",
@@ -2037,11 +2044,11 @@ export const timetables: Timetable[] = [
           { id: 167, time: 2340 },
           { id: 168, time: 2348 },
           { id: 169, time: 2357 },
-          { id: 170, time: 2405, note: "最終" }
-        ]
+          { id: 170, time: 2405, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "麻生方面",
         arrivals: [
@@ -2194,8 +2201,8 @@ export const timetables: Timetable[] = [
           { id: 147, time: 2354 },
           { id: 148, time: 2403 },
           { id: 149, time: 2412 },
-          { id: 150, time: 2421, note: "最終" }
-        ]
+          { id: 150, time: 2421, note: "最終" },
+        ],
       },
       {
         direction: "真駒内方面",
@@ -2349,14 +2356,14 @@ export const timetables: Timetable[] = [
           { id: 147, time: 2340 },
           { id: 148, time: 2348 },
           { id: 149, time: 2357 },
-          { id: 150, time: 2405, note: "最終" }
-        ]
+          { id: 150, time: 2405, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "N05",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "麻生方面",
         arrivals: [
@@ -2529,8 +2536,8 @@ export const timetables: Timetable[] = [
           { id: 167, time: 2352 },
           { id: 168, time: 2402 },
           { id: 169, time: 2411 },
-          { id: 170, time: 2420, note: "最終" }
-        ]
+          { id: 170, time: 2420, note: "最終" },
+        ],
       },
       {
         direction: "真駒内方面",
@@ -2704,11 +2711,11 @@ export const timetables: Timetable[] = [
           { id: 167, time: 2342 },
           { id: 168, time: 2350 },
           { id: 169, time: 2358 },
-          { id: 170, time: 2407, note: "最終" }
-        ]
+          { id: 170, time: 2407, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "麻生方面",
         arrivals: [
@@ -2861,8 +2868,8 @@ export const timetables: Timetable[] = [
           { id: 147, time: 2352 },
           { id: 148, time: 2402 },
           { id: 149, time: 2411 },
-          { id: 150, time: 2420, note: "最終" }
-        ]
+          { id: 150, time: 2420, note: "最終" },
+        ],
       },
       {
         direction: "真駒内方面",
@@ -3016,14 +3023,14 @@ export const timetables: Timetable[] = [
           { id: 147, time: 2342 },
           { id: 148, time: 2350 },
           { id: 149, time: 2358 },
-          { id: 150, time: 2407, note: "最終" }
-        ]
+          { id: 150, time: 2407, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "N06",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "麻生方面",
         arrivals: [
@@ -3196,8 +3203,8 @@ export const timetables: Timetable[] = [
           { id: 167, time: 2350 },
           { id: 168, time: 2400 },
           { id: 169, time: 2409 },
-          { id: 170, time: 2418, note: "最終" }
-        ]
+          { id: 170, time: 2418, note: "最終" },
+        ],
       },
       {
         direction: "真駒内方面",
@@ -3371,11 +3378,11 @@ export const timetables: Timetable[] = [
           { id: 167, time: 2344 },
           { id: 168, time: 2352 },
           { id: 169, time: 2401 },
-          { id: 170, time: 2409, note: "最終" }
-        ]
+          { id: 170, time: 2409, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "麻生方面",
         arrivals: [
@@ -3528,8 +3535,8 @@ export const timetables: Timetable[] = [
           { id: 147, time: 2350 },
           { id: 148, time: 2400 },
           { id: 149, time: 2409 },
-          { id: 150, time: 2418, note: "最終" }
-        ]
+          { id: 150, time: 2418, note: "最終" },
+        ],
       },
       {
         direction: "真駒内方面",
@@ -3683,14 +3690,14 @@ export const timetables: Timetable[] = [
           { id: 147, time: 2344 },
           { id: 148, time: 2352 },
           { id: 149, time: 2401 },
-          { id: 150, time: 2409, note: "最終" }
-        ]
+          { id: 150, time: 2409, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "N07",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "麻生方面",
         arrivals: [
@@ -3863,8 +3870,8 @@ export const timetables: Timetable[] = [
           { id: 167, time: 2349 },
           { id: 168, time: 2358 },
           { id: 169, time: 2407 },
-          { id: 170, time: 2416, note: "最終" }
-        ]
+          { id: 170, time: 2416, note: "最終" },
+        ],
       },
       {
         direction: "真駒内方面",
@@ -4038,11 +4045,11 @@ export const timetables: Timetable[] = [
           { id: 167, time: 2346 },
           { id: 168, time: 2354 },
           { id: 169, time: 2402 },
-          { id: 170, time: 2411, note: "最終" }
-        ]
+          { id: 170, time: 2411, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "麻生方面",
         arrivals: [
@@ -4195,8 +4202,8 @@ export const timetables: Timetable[] = [
           { id: 147, time: 2349 },
           { id: 148, time: 2358 },
           { id: 149, time: 2407 },
-          { id: 150, time: 2416, note: "最終" }
-        ]
+          { id: 150, time: 2416, note: "最終" },
+        ],
       },
       {
         direction: "真駒内方面",
@@ -4350,14 +4357,14 @@ export const timetables: Timetable[] = [
           { id: 147, time: 2346 },
           { id: 148, time: 2354 },
           { id: 149, time: 2402 },
-          { id: 150, time: 2411, note: "最終" }
-        ]
+          { id: 150, time: 2411, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "N08",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "麻生方面",
         arrivals: [
@@ -4530,8 +4537,8 @@ export const timetables: Timetable[] = [
           { id: 167, time: 2347 },
           { id: 168, time: 2356 },
           { id: 169, time: 2405 },
-          { id: 170, time: 2414, note: "最終" }
-        ]
+          { id: 170, time: 2414, note: "最終" },
+        ],
       },
       {
         direction: "真駒内方面",
@@ -4705,11 +4712,11 @@ export const timetables: Timetable[] = [
           { id: 167, time: 2347 },
           { id: 168, time: 2355 },
           { id: 169, time: 2404 },
-          { id: 170, time: 2412, note: "最終" }
-        ]
+          { id: 170, time: 2412, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "麻生方面",
         arrivals: [
@@ -4862,8 +4869,8 @@ export const timetables: Timetable[] = [
           { id: 147, time: 2347 },
           { id: 148, time: 2356 },
           { id: 149, time: 2405 },
-          { id: 150, time: 2414, note: "最終" }
-        ]
+          { id: 150, time: 2414, note: "最終" },
+        ],
       },
       {
         direction: "真駒内方面",
@@ -5017,14 +5024,14 @@ export const timetables: Timetable[] = [
           { id: 147, time: 2347 },
           { id: 148, time: 2355 },
           { id: 149, time: 2404 },
-          { id: 150, time: 2412, note: "最終" }
-        ]
+          { id: 150, time: 2412, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "N09",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "麻生方面",
         arrivals: [
@@ -5197,8 +5204,8 @@ export const timetables: Timetable[] = [
           { id: 167, time: 2345 },
           { id: 168, time: 2355 },
           { id: 169, time: 2404 },
-          { id: 170, time: 2413, note: "最終" }
-        ]
+          { id: 170, time: 2413, note: "最終" },
+        ],
       },
       {
         direction: "真駒内方面",
@@ -5372,11 +5379,11 @@ export const timetables: Timetable[] = [
           { id: 167, time: 2349 },
           { id: 168, time: 2357 },
           { id: 169, time: 2405 },
-          { id: 170, time: 2414, note: "最終" }
-        ]
+          { id: 170, time: 2414, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "麻生方面",
         arrivals: [
@@ -5529,8 +5536,8 @@ export const timetables: Timetable[] = [
           { id: 147, time: 2345 },
           { id: 148, time: 2355 },
           { id: 149, time: 2404 },
-          { id: 150, time: 2413, note: "最終" }
-        ]
+          { id: 150, time: 2413, note: "最終" },
+        ],
       },
       {
         direction: "真駒内方面",
@@ -5684,14 +5691,14 @@ export const timetables: Timetable[] = [
           { id: 147, time: 2349 },
           { id: 148, time: 2357 },
           { id: 149, time: 2405 },
-          { id: 150, time: 2414, note: "最終" }
-        ]
+          { id: 150, time: 2414, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "N10",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "麻生方面",
         arrivals: [
@@ -5864,8 +5871,8 @@ export const timetables: Timetable[] = [
           { id: 167, time: 2344 },
           { id: 168, time: 2353 },
           { id: 169, time: 2402 },
-          { id: 170, time: 2411, note: "最終" }
-        ]
+          { id: 170, time: 2411, note: "最終" },
+        ],
       },
       {
         direction: "真駒内方面",
@@ -6039,11 +6046,11 @@ export const timetables: Timetable[] = [
           { id: 167, time: 2350 },
           { id: 168, time: 2358 },
           { id: 169, time: 2407 },
-          { id: 170, time: 2415, note: "最終" }
-        ]
+          { id: 170, time: 2415, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "麻生方面",
         arrivals: [
@@ -6196,8 +6203,8 @@ export const timetables: Timetable[] = [
           { id: 147, time: 2344 },
           { id: 148, time: 2353 },
           { id: 149, time: 2402 },
-          { id: 150, time: 2411, note: "最終" }
-        ]
+          { id: 150, time: 2411, note: "最終" },
+        ],
       },
       {
         direction: "真駒内方面",
@@ -6351,14 +6358,14 @@ export const timetables: Timetable[] = [
           { id: 147, time: 2350 },
           { id: 148, time: 2358 },
           { id: 149, time: 2407 },
-          { id: 150, time: 2415, note: "最終" }
-        ]
+          { id: 150, time: 2415, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "N11",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "麻生方面",
         arrivals: [
@@ -6531,8 +6538,8 @@ export const timetables: Timetable[] = [
           { id: 167, time: 2342 },
           { id: 168, time: 2352 },
           { id: 169, time: 2401 },
-          { id: 170, time: 2410, note: "最終" }
-        ]
+          { id: 170, time: 2410, note: "最終" },
+        ],
       },
       {
         direction: "真駒内方面",
@@ -6706,11 +6713,11 @@ export const timetables: Timetable[] = [
           { id: 167, time: 2352 },
           { id: 168, time: 2400 },
           { id: 169, time: 2408 },
-          { id: 170, time: 2417, note: "最終" }
-        ]
+          { id: 170, time: 2417, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "麻生方面",
         arrivals: [
@@ -6863,8 +6870,8 @@ export const timetables: Timetable[] = [
           { id: 147, time: 2342 },
           { id: 148, time: 2352 },
           { id: 149, time: 2401 },
-          { id: 150, time: 2410, note: "最終" }
-        ]
+          { id: 150, time: 2410, note: "最終" },
+        ],
       },
       {
         direction: "真駒内方面",
@@ -7018,14 +7025,14 @@ export const timetables: Timetable[] = [
           { id: 147, time: 2352 },
           { id: 148, time: 2400 },
           { id: 149, time: 2408 },
-          { id: 150, time: 2417, note: "最終" }
-        ]
+          { id: 150, time: 2417, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "N12",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "麻生方面",
         arrivals: [
@@ -7198,8 +7205,8 @@ export const timetables: Timetable[] = [
           { id: 167, time: 2341 },
           { id: 168, time: 2350 },
           { id: 169, time: 2359 },
-          { id: 170, time: 2408, note: "最終" }
-        ]
+          { id: 170, time: 2408, note: "最終" },
+        ],
       },
       {
         direction: "真駒内方面",
@@ -7373,11 +7380,11 @@ export const timetables: Timetable[] = [
           { id: 167, time: 2353 },
           { id: 168, time: 2401 },
           { id: 169, time: 2410 },
-          { id: 170, time: 2418, note: "最終" }
-        ]
+          { id: 170, time: 2418, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "麻生方面",
         arrivals: [
@@ -7530,8 +7537,8 @@ export const timetables: Timetable[] = [
           { id: 147, time: 2341 },
           { id: 148, time: 2350 },
           { id: 149, time: 2359 },
-          { id: 150, time: 2408, note: "最終" }
-        ]
+          { id: 150, time: 2408, note: "最終" },
+        ],
       },
       {
         direction: "真駒内方面",
@@ -7685,14 +7692,14 @@ export const timetables: Timetable[] = [
           { id: 147, time: 2353 },
           { id: 148, time: 2401 },
           { id: 149, time: 2410 },
-          { id: 150, time: 2418, note: "最終" }
-        ]
+          { id: 150, time: 2418, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "N13",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "麻生方面",
         arrivals: [
@@ -7865,8 +7872,8 @@ export const timetables: Timetable[] = [
           { id: 167, time: 2339 },
           { id: 168, time: 2349 },
           { id: 169, time: 2358 },
-          { id: 170, time: 2407, note: "最終" }
-        ]
+          { id: 170, time: 2407, note: "最終" },
+        ],
       },
       {
         direction: "真駒内方面",
@@ -8040,11 +8047,11 @@ export const timetables: Timetable[] = [
           { id: 167, time: 2355 },
           { id: 168, time: 2403 },
           { id: 169, time: 2411 },
-          { id: 170, time: 2420, note: "最終" }
-        ]
+          { id: 170, time: 2420, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "麻生方面",
         arrivals: [
@@ -8197,8 +8204,8 @@ export const timetables: Timetable[] = [
           { id: 147, time: 2339 },
           { id: 148, time: 2349 },
           { id: 149, time: 2358 },
-          { id: 150, time: 2407, note: "最終" }
-        ]
+          { id: 150, time: 2407, note: "最終" },
+        ],
       },
       {
         direction: "真駒内方面",
@@ -8352,14 +8359,14 @@ export const timetables: Timetable[] = [
           { id: 147, time: 2355 },
           { id: 148, time: 2403 },
           { id: 149, time: 2411 },
-          { id: 150, time: 2420, note: "最終" }
-        ]
+          { id: 150, time: 2420, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "N14",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "麻生方面",
         arrivals: [
@@ -8532,8 +8539,8 @@ export const timetables: Timetable[] = [
           { id: 167, time: 2337 },
           { id: 168, time: 2346 },
           { id: 169, time: 2355 },
-          { id: 170, time: 2404, note: "最終" }
-        ]
+          { id: 170, time: 2404, note: "最終" },
+        ],
       },
       {
         direction: "真駒内方面",
@@ -8707,11 +8714,11 @@ export const timetables: Timetable[] = [
           { id: 167, time: 2357 },
           { id: 168, time: 2405 },
           { id: 169, time: 2414 },
-          { id: 170, time: 2422, note: "最終" }
-        ]
+          { id: 170, time: 2422, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "麻生方面",
         arrivals: [
@@ -8864,8 +8871,8 @@ export const timetables: Timetable[] = [
           { id: 147, time: 2337 },
           { id: 148, time: 2346 },
           { id: 149, time: 2355 },
-          { id: 150, time: 2404, note: "最終" }
-        ]
+          { id: 150, time: 2404, note: "最終" },
+        ],
       },
       {
         direction: "真駒内方面",
@@ -9019,14 +9026,14 @@ export const timetables: Timetable[] = [
           { id: 147, time: 2357 },
           { id: 148, time: 2405 },
           { id: 149, time: 2414 },
-          { id: 150, time: 2422, note: "最終" }
-        ]
+          { id: 150, time: 2422, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "N15",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "麻生方面",
         arrivals: [
@@ -9199,8 +9206,8 @@ export const timetables: Timetable[] = [
           { id: 167, time: 2335 },
           { id: 168, time: 2344 },
           { id: 169, time: 2353 },
-          { id: 170, time: 2402, note: "最終" }
-        ]
+          { id: 170, time: 2402, note: "最終" },
+        ],
       },
       {
         direction: "真駒内方面",
@@ -9369,11 +9376,11 @@ export const timetables: Timetable[] = [
           { id: 167, time: 2359 },
           { id: 168, time: 2407 },
           { id: 169, time: 2416 },
-          { id: 170, time: 2424, note: "最終" }
-        ]
+          { id: 170, time: 2424, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "麻生方面",
         arrivals: [
@@ -9526,8 +9533,8 @@ export const timetables: Timetable[] = [
           { id: 147, time: 2335 },
           { id: 148, time: 2344 },
           { id: 149, time: 2353 },
-          { id: 150, time: 2402, note: "最終" }
-        ]
+          { id: 150, time: 2402, note: "最終" },
+        ],
       },
       {
         direction: "真駒内方面",
@@ -9681,14 +9688,14 @@ export const timetables: Timetable[] = [
           { id: 152, time: 2359 },
           { id: 153, time: 2407 },
           { id: 154, time: 2416 },
-          { id: 155, time: 2424, note: "最終" }
-        ]
+          { id: 155, time: 2424, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "N16",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "麻生方面",
         arrivals: [
@@ -9861,11 +9868,11 @@ export const timetables: Timetable[] = [
           { id: 167, time: 2332 },
           { id: 168, time: 2342 },
           { id: 169, time: 2351 },
-          { id: 170, time: 2400, note: "最終" }
-        ]
+          { id: 170, time: 2400, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "麻生方面",
         arrivals: [
@@ -10018,14 +10025,14 @@ export const timetables: Timetable[] = [
           { id: 147, time: 2332 },
           { id: 148, time: 2342 },
           { id: 149, time: 2351 },
-          { id: 150, time: 2400, note: "最終" }
-        ]
+          { id: 150, time: 2400, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "T01",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "新さっぽろ方面",
         arrivals: [
@@ -10197,11 +10204,11 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2332 },
           { id: 167, time: 2340 },
           { id: 168, time: 2350 },
-          { id: 169, time: 2400, note: "最終" }
-        ]
+          { id: 169, time: 2400, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "新さっぽろ方面",
         arrivals: [
@@ -10352,14 +10359,14 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2332 },
           { id: 146, time: 2340 },
           { id: 147, time: 2350 },
-          { id: 148, time: 2400, note: "最終" }
-        ]
+          { id: 148, time: 2400, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "T02",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -10531,8 +10538,8 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2402 },
           { id: 167, time: 2412 },
           { id: 168, time: 2422 },
-          { id: 169, time: 2432, note: "最終" }
-        ]
+          { id: 169, time: 2432, note: "最終" },
+        ],
       },
       {
         direction: "新さっぽろ方面",
@@ -10705,11 +10712,11 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2334 },
           { id: 167, time: 2342 },
           { id: 168, time: 2352 },
-          { id: 169, time: 2402, note: "最終" }
-        ]
+          { id: 169, time: 2402, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -10860,8 +10867,8 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2402 },
           { id: 146, time: 2412 },
           { id: 147, time: 2422 },
-          { id: 148, time: 2432, note: "最終" }
-        ]
+          { id: 148, time: 2432, note: "最終" },
+        ],
       },
       {
         direction: "新さっぽろ方面",
@@ -11013,14 +11020,14 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2334 },
           { id: 146, time: 2342 },
           { id: 147, time: 2352 },
-          { id: 148, time: 2402, note: "最終" }
-        ]
+          { id: 148, time: 2402, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "T03",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -11192,8 +11199,8 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2400 },
           { id: 167, time: 2410 },
           { id: 168, time: 2420 },
-          { id: 169, time: 2430, note: "最終" }
-        ]
+          { id: 169, time: 2430, note: "最終" },
+        ],
       },
       {
         direction: "新さっぽろ方面",
@@ -11366,11 +11373,11 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2336 },
           { id: 167, time: 2344 },
           { id: 168, time: 2354 },
-          { id: 169, time: 2404, note: "最終" }
-        ]
+          { id: 169, time: 2404, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -11521,8 +11528,8 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2400 },
           { id: 146, time: 2410 },
           { id: 147, time: 2420 },
-          { id: 148, time: 2430, note: "最終" }
-        ]
+          { id: 148, time: 2430, note: "最終" },
+        ],
       },
       {
         direction: "新さっぽろ方面",
@@ -11674,14 +11681,14 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2336 },
           { id: 146, time: 2344 },
           { id: 147, time: 2354 },
-          { id: 148, time: 2404, note: "最終" }
-        ]
+          { id: 148, time: 2404, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "T04",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -11853,8 +11860,8 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2358 },
           { id: 167, time: 2408 },
           { id: 168, time: 2418 },
-          { id: 169, time: 2428, note: "最終" }
-        ]
+          { id: 169, time: 2428, note: "最終" },
+        ],
       },
       {
         direction: "新さっぽろ方面",
@@ -12027,11 +12034,11 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2338 },
           { id: 167, time: 2346 },
           { id: 168, time: 2356 },
-          { id: 169, time: 2406, note: "最終" }
-        ]
+          { id: 169, time: 2406, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -12182,8 +12189,8 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2358 },
           { id: 146, time: 2408 },
           { id: 147, time: 2418 },
-          { id: 148, time: 2428, note: "最終" }
-        ]
+          { id: 148, time: 2428, note: "最終" },
+        ],
       },
       {
         direction: "新さっぽろ方面",
@@ -12335,14 +12342,14 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2338 },
           { id: 146, time: 2346 },
           { id: 147, time: 2356 },
-          { id: 148, time: 2406, note: "最終" }
-        ]
+          { id: 148, time: 2406, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "T05",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -12514,8 +12521,8 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2356 },
           { id: 167, time: 2406 },
           { id: 168, time: 2416 },
-          { id: 169, time: 2426, note: "最終" }
-        ]
+          { id: 169, time: 2426, note: "最終" },
+        ],
       },
       {
         direction: "新さっぽろ方面",
@@ -12688,11 +12695,11 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2340 },
           { id: 167, time: 2348 },
           { id: 168, time: 2358 },
-          { id: 169, time: 2408, note: "最終" }
-        ]
+          { id: 169, time: 2408, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -12843,8 +12850,8 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2356 },
           { id: 146, time: 2406 },
           { id: 147, time: 2416 },
-          { id: 148, time: 2426, note: "最終" }
-        ]
+          { id: 148, time: 2426, note: "最終" },
+        ],
       },
       {
         direction: "新さっぽろ方面",
@@ -12996,14 +13003,14 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2340 },
           { id: 146, time: 2348 },
           { id: 147, time: 2358 },
-          { id: 148, time: 2408, note: "最終" }
-        ]
+          { id: 148, time: 2408, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "T06",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -13175,8 +13182,8 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2354 },
           { id: 167, time: 2404 },
           { id: 168, time: 2414 },
-          { id: 169, time: 2424, note: "最終" }
-        ]
+          { id: 169, time: 2424, note: "最終" },
+        ],
       },
       {
         direction: "新さっぽろ方面",
@@ -13349,11 +13356,11 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2342 },
           { id: 167, time: 2350 },
           { id: 168, time: 2400 },
-          { id: 169, time: 2410, note: "最終" }
-        ]
+          { id: 169, time: 2410, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -13504,8 +13511,8 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2354 },
           { id: 146, time: 2404 },
           { id: 147, time: 2414 },
-          { id: 148, time: 2424, note: "最終" }
-        ]
+          { id: 148, time: 2424, note: "最終" },
+        ],
       },
       {
         direction: "新さっぽろ方面",
@@ -13657,14 +13664,14 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2342 },
           { id: 146, time: 2350 },
           { id: 147, time: 2400 },
-          { id: 148, time: 2410, note: "最終" }
-        ]
+          { id: 148, time: 2410, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "T07",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -13836,8 +13843,8 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2353 },
           { id: 167, time: 2403 },
           { id: 168, time: 2413 },
-          { id: 169, time: 2423, note: "最終" }
-        ]
+          { id: 169, time: 2423, note: "最終" },
+        ],
       },
       {
         direction: "新さっぽろ方面",
@@ -14010,11 +14017,11 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2343 },
           { id: 167, time: 2351 },
           { id: 168, time: 2401 },
-          { id: 169, time: 2411, note: "最終" }
-        ]
+          { id: 169, time: 2411, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -14165,8 +14172,8 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2353 },
           { id: 146, time: 2403 },
           { id: 147, time: 2413 },
-          { id: 148, time: 2423, note: "最終" }
-        ]
+          { id: 148, time: 2423, note: "最終" },
+        ],
       },
       {
         direction: "新さっぽろ方面",
@@ -14318,14 +14325,14 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2343 },
           { id: 146, time: 2351 },
           { id: 147, time: 2401 },
-          { id: 148, time: 2411, note: "最終" }
-        ]
+          { id: 148, time: 2411, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "T08",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -14497,8 +14504,8 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2351 },
           { id: 167, time: 2401 },
           { id: 168, time: 2411 },
-          { id: 169, time: 2421, note: "最終" }
-        ]
+          { id: 169, time: 2421, note: "最終" },
+        ],
       },
       {
         direction: "新さっぽろ方面",
@@ -14671,11 +14678,11 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2345 },
           { id: 167, time: 2353 },
           { id: 168, time: 2403 },
-          { id: 169, time: 2413, note: "最終" }
-        ]
+          { id: 169, time: 2413, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -14826,8 +14833,8 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2351 },
           { id: 146, time: 2401 },
           { id: 147, time: 2411 },
-          { id: 148, time: 2421, note: "最終" }
-        ]
+          { id: 148, time: 2421, note: "最終" },
+        ],
       },
       {
         direction: "新さっぽろ方面",
@@ -14979,14 +14986,14 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2345 },
           { id: 146, time: 2353 },
           { id: 147, time: 2403 },
-          { id: 148, time: 2413, note: "最終" }
-        ]
+          { id: 148, time: 2413, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "T09",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -15158,8 +15165,8 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2349 },
           { id: 167, time: 2359 },
           { id: 168, time: 2409 },
-          { id: 169, time: 2419, note: "最終" }
-        ]
+          { id: 169, time: 2419, note: "最終" },
+        ],
       },
       {
         direction: "新さっぽろ方面",
@@ -15332,11 +15339,11 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2347 },
           { id: 167, time: 2355 },
           { id: 168, time: 2405 },
-          { id: 169, time: 2415, note: "最終" }
-        ]
+          { id: 169, time: 2415, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -15487,8 +15494,8 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2349 },
           { id: 146, time: 2359 },
           { id: 147, time: 2409 },
-          { id: 148, time: 2419, note: "最終" }
-        ]
+          { id: 148, time: 2419, note: "最終" },
+        ],
       },
       {
         direction: "新さっぽろ方面",
@@ -15640,14 +15647,14 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2347 },
           { id: 146, time: 2355 },
           { id: 147, time: 2405 },
-          { id: 148, time: 2415, note: "最終" }
-        ]
+          { id: 148, time: 2415, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "T10",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -15819,8 +15826,8 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2347 },
           { id: 167, time: 2357 },
           { id: 168, time: 2407 },
-          { id: 169, time: 2417, note: "最終" }
-        ]
+          { id: 169, time: 2417, note: "最終" },
+        ],
       },
       {
         direction: "新さっぽろ方面",
@@ -15993,11 +16000,11 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2349 },
           { id: 167, time: 2357 },
           { id: 168, time: 2407 },
-          { id: 169, time: 2417, note: "最終" }
-        ]
+          { id: 169, time: 2417, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -16148,8 +16155,8 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2347 },
           { id: 146, time: 2357 },
           { id: 147, time: 2407 },
-          { id: 148, time: 2417, note: "最終" }
-        ]
+          { id: 148, time: 2417, note: "最終" },
+        ],
       },
       {
         direction: "新さっぽろ方面",
@@ -16301,14 +16308,14 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2349 },
           { id: 146, time: 2357 },
           { id: 147, time: 2407 },
-          { id: 148, time: 2417, note: "最終" }
-        ]
+          { id: 148, time: 2417, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "T11",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -16480,8 +16487,8 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2345 },
           { id: 167, time: 2355 },
           { id: 168, time: 2405 },
-          { id: 169, time: 2415, note: "最終" }
-        ]
+          { id: 169, time: 2415, note: "最終" },
+        ],
       },
       {
         direction: "新さっぽろ方面",
@@ -16654,11 +16661,11 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2351 },
           { id: 167, time: 2359 },
           { id: 168, time: 2409 },
-          { id: 169, time: 2419, note: "最終" }
-        ]
+          { id: 169, time: 2419, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -16809,8 +16816,8 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2345 },
           { id: 146, time: 2355 },
           { id: 147, time: 2405 },
-          { id: 148, time: 2415, note: "最終" }
-        ]
+          { id: 148, time: 2415, note: "最終" },
+        ],
       },
       {
         direction: "新さっぽろ方面",
@@ -16962,14 +16969,14 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2351 },
           { id: 146, time: 2359 },
           { id: 147, time: 2409 },
-          { id: 148, time: 2419, note: "最終" }
-        ]
+          { id: 148, time: 2419, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "T12",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -17141,8 +17148,8 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2343 },
           { id: 167, time: 2353 },
           { id: 168, time: 2403 },
-          { id: 169, time: 2413, note: "最終" }
-        ]
+          { id: 169, time: 2413, note: "最終" },
+        ],
       },
       {
         direction: "新さっぽろ方面",
@@ -17315,11 +17322,11 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2353 },
           { id: 167, time: 2401 },
           { id: 168, time: 2411 },
-          { id: 169, time: 2421, note: "最終" }
-        ]
+          { id: 169, time: 2421, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -17470,8 +17477,8 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2343 },
           { id: 146, time: 2353 },
           { id: 147, time: 2403 },
-          { id: 148, time: 2413, note: "最終" }
-        ]
+          { id: 148, time: 2413, note: "最終" },
+        ],
       },
       {
         direction: "新さっぽろ方面",
@@ -17623,14 +17630,14 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2353 },
           { id: 146, time: 2401 },
           { id: 147, time: 2411 },
-          { id: 148, time: 2421, note: "最終" }
-        ]
+          { id: 148, time: 2421, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "T13",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -17802,8 +17809,8 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2341 },
           { id: 167, time: 2351 },
           { id: 168, time: 2401 },
-          { id: 169, time: 2411, note: "最終" }
-        ]
+          { id: 169, time: 2411, note: "最終" },
+        ],
       },
       {
         direction: "新さっぽろ方面",
@@ -17976,11 +17983,11 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2355 },
           { id: 167, time: 2403 },
           { id: 168, time: 2413 },
-          { id: 169, time: 2423, note: "最終" }
-        ]
+          { id: 169, time: 2423, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -18131,8 +18138,8 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2341 },
           { id: 146, time: 2351 },
           { id: 147, time: 2401 },
-          { id: 148, time: 2411, note: "最終" }
-        ]
+          { id: 148, time: 2411, note: "最終" },
+        ],
       },
       {
         direction: "新さっぽろ方面",
@@ -18284,14 +18291,14 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2355 },
           { id: 146, time: 2403 },
           { id: 147, time: 2413 },
-          { id: 148, time: 2423, note: "最終" }
-        ]
+          { id: 148, time: 2423, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "T14",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -18463,8 +18470,8 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2339 },
           { id: 167, time: 2349 },
           { id: 168, time: 2359 },
-          { id: 169, time: 2409, note: "最終" }
-        ]
+          { id: 169, time: 2409, note: "最終" },
+        ],
       },
       {
         direction: "新さっぽろ方面",
@@ -18637,11 +18644,11 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2357 },
           { id: 167, time: 2405 },
           { id: 168, time: 2415 },
-          { id: 169, time: 2425, note: "最終" }
-        ]
+          { id: 169, time: 2425, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -18792,8 +18799,8 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2339 },
           { id: 146, time: 2349 },
           { id: 147, time: 2359 },
-          { id: 148, time: 2409, note: "最終" }
-        ]
+          { id: 148, time: 2409, note: "最終" },
+        ],
       },
       {
         direction: "新さっぽろ方面",
@@ -18945,14 +18952,14 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2357 },
           { id: 146, time: 2405 },
           { id: 147, time: 2415 },
-          { id: 148, time: 2425, note: "最終" }
-        ]
+          { id: 148, time: 2425, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "T15",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -19123,8 +19130,8 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2337 },
           { id: 167, time: 2347 },
           { id: 168, time: 2357 },
-          { id: 169, time: 2407, note: "最終" }
-        ]
+          { id: 169, time: 2407, note: "最終" },
+        ],
       },
       {
         direction: "新さっぽろ方面",
@@ -19297,11 +19304,11 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2359 },
           { id: 167, time: 2407 },
           { id: 168, time: 2417 },
-          { id: 169, time: 2427, note: "最終" }
-        ]
+          { id: 169, time: 2427, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -19451,8 +19458,8 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2337 },
           { id: 146, time: 2347 },
           { id: 147, time: 2357 },
-          { id: 148, time: 2407, note: "最終" }
-        ]
+          { id: 148, time: 2407, note: "最終" },
+        ],
       },
       {
         direction: "新さっぽろ方面",
@@ -19604,14 +19611,14 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2359 },
           { id: 146, time: 2407 },
           { id: 147, time: 2417 },
-          { id: 148, time: 2427, note: "最終" }
-        ]
+          { id: 148, time: 2427, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "T16",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -19782,8 +19789,8 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2335 },
           { id: 167, time: 2345 },
           { id: 168, time: 2355 },
-          { id: 169, time: 2405, note: "最終" }
-        ]
+          { id: 169, time: 2405, note: "最終" },
+        ],
       },
       {
         direction: "新さっぽろ方面",
@@ -19956,11 +19963,11 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2401 },
           { id: 167, time: 2409 },
           { id: 168, time: 2419 },
-          { id: 169, time: 2429, note: "最終" }
-        ]
+          { id: 169, time: 2429, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -20110,8 +20117,8 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2335 },
           { id: 146, time: 2345 },
           { id: 147, time: 2355 },
-          { id: 148, time: 2405, note: "最終" }
-        ]
+          { id: 148, time: 2405, note: "最終" },
+        ],
       },
       {
         direction: "新さっぽろ方面",
@@ -20263,14 +20270,14 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2401 },
           { id: 146, time: 2409 },
           { id: 147, time: 2419 },
-          { id: 148, time: 2429, note: "最終" }
-        ]
+          { id: 148, time: 2429, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "T17",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -20441,8 +20448,8 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2333 },
           { id: 167, time: 2343 },
           { id: 168, time: 2353 },
-          { id: 169, time: 2403, note: "最終" }
-        ]
+          { id: 169, time: 2403, note: "最終" },
+        ],
       },
       {
         direction: "新さっぽろ方面",
@@ -20615,11 +20622,11 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2403 },
           { id: 167, time: 2411 },
           { id: 168, time: 2421 },
-          { id: 169, time: 2431, note: "最終" }
-        ]
+          { id: 169, time: 2431, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -20769,8 +20776,8 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2333 },
           { id: 146, time: 2343 },
           { id: 147, time: 2353 },
-          { id: 148, time: 2403, note: "最終" }
-        ]
+          { id: 148, time: 2403, note: "最終" },
+        ],
       },
       {
         direction: "新さっぽろ方面",
@@ -20922,14 +20929,14 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2403 },
           { id: 146, time: 2411 },
           { id: 147, time: 2421 },
-          { id: 148, time: 2431, note: "最終" }
-        ]
+          { id: 148, time: 2431, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "T18",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -21100,8 +21107,8 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2331 },
           { id: 167, time: 2341 },
           { id: 168, time: 2351 },
-          { id: 169, time: 2401, note: "最終" }
-        ]
+          { id: 169, time: 2401, note: "最終" },
+        ],
       },
       {
         direction: "新さっぽろ方面",
@@ -21274,11 +21281,11 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2405 },
           { id: 167, time: 2413 },
           { id: 168, time: 2423 },
-          { id: 169, time: 2433, note: "最終" }
-        ]
+          { id: 169, time: 2433, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -21428,8 +21435,8 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2331 },
           { id: 146, time: 2341 },
           { id: 147, time: 2351 },
-          { id: 148, time: 2401, note: "最終" }
-        ]
+          { id: 148, time: 2401, note: "最終" },
+        ],
       },
       {
         direction: "新さっぽろ方面",
@@ -21581,14 +21588,14 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2405 },
           { id: 146, time: 2413 },
           { id: 147, time: 2423 },
-          { id: 148, time: 2433, note: "最終" }
-        ]
+          { id: 148, time: 2433, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "T19",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -21759,11 +21766,11 @@ export const timetables: Timetable[] = [
           { id: 166, time: 2330 },
           { id: 167, time: 2340 },
           { id: 168, time: 2350 },
-          { id: 169, time: 2400, note: "最終" }
-        ]
+          { id: 169, time: 2400, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "宮の沢方面",
         arrivals: [
@@ -21913,14 +21920,14 @@ export const timetables: Timetable[] = [
           { id: 145, time: 2330 },
           { id: 146, time: 2340 },
           { id: 147, time: 2350 },
-          { id: 148, time: 2400, note: "最終" }
-        ]
+          { id: 148, time: 2400, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "H01",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "福住方面",
         arrivals: [
@@ -22081,11 +22088,11 @@ export const timetables: Timetable[] = [
           { id: 155, time: 2330 },
           { id: 156, time: 2340 },
           { id: 157, time: 2350 },
-          { id: 158, time: 2400, note: "最終" }
-        ]
+          { id: 158, time: 2400, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "福住方面",
         arrivals: [
@@ -22228,14 +22235,14 @@ export const timetables: Timetable[] = [
           { id: 137, time: 2330 },
           { id: 138, time: 2340 },
           { id: 139, time: 2350 },
-          { id: 140, time: 2400, note: "最終" }
-        ]
+          { id: 140, time: 2400, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "H02",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "栄町方面",
         arrivals: [
@@ -22402,8 +22409,8 @@ export const timetables: Timetable[] = [
           { id: 161, time: 2353 },
           { id: 162, time: 2403 },
           { id: 163, time: 2413 },
-          { id: 164, time: 2424, note: "最終" }
-        ]
+          { id: 164, time: 2424, note: "最終" },
+        ],
       },
       {
         direction: "福住方面",
@@ -22565,11 +22572,11 @@ export const timetables: Timetable[] = [
           { id: 155, time: 2331 },
           { id: 156, time: 2341 },
           { id: 157, time: 2351 },
-          { id: 158, time: 2401, note: "最終" }
-        ]
+          { id: 158, time: 2401, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "栄町方面",
         arrivals: [
@@ -22718,8 +22725,8 @@ export const timetables: Timetable[] = [
           { id: 143, time: 2353 },
           { id: 144, time: 2403 },
           { id: 145, time: 2413 },
-          { id: 146, time: 2424, note: "最終" }
-        ]
+          { id: 146, time: 2424, note: "最終" },
+        ],
       },
       {
         direction: "福住方面",
@@ -22863,14 +22870,14 @@ export const timetables: Timetable[] = [
           { id: 137, time: 2331 },
           { id: 138, time: 2341 },
           { id: 139, time: 2351 },
-          { id: 140, time: 2401, note: "最終" }
-        ]
+          { id: 140, time: 2401, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "H03",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "栄町方面",
         arrivals: [
@@ -23037,8 +23044,8 @@ export const timetables: Timetable[] = [
           { id: 161, time: 2351 },
           { id: 162, time: 2401 },
           { id: 163, time: 2411 },
-          { id: 164, time: 2422, note: "最終" }
-        ]
+          { id: 164, time: 2422, note: "最終" },
+        ],
       },
       {
         direction: "福住方面",
@@ -23200,11 +23207,11 @@ export const timetables: Timetable[] = [
           { id: 155, time: 2333 },
           { id: 156, time: 2343 },
           { id: 157, time: 2353 },
-          { id: 158, time: 2403, note: "最終" }
-        ]
+          { id: 158, time: 2403, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "栄町方面",
         arrivals: [
@@ -23353,8 +23360,8 @@ export const timetables: Timetable[] = [
           { id: 143, time: 2351 },
           { id: 144, time: 2401 },
           { id: 145, time: 2411 },
-          { id: 146, time: 2422, note: "最終" }
-        ]
+          { id: 146, time: 2422, note: "最終" },
+        ],
       },
       {
         direction: "福住方面",
@@ -23498,14 +23505,14 @@ export const timetables: Timetable[] = [
           { id: 137, time: 2333 },
           { id: 138, time: 2343 },
           { id: 139, time: 2353 },
-          { id: 140, time: 2403, note: "最終" }
-        ]
+          { id: 140, time: 2403, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "H04",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "栄町方面",
         arrivals: [
@@ -23672,8 +23679,8 @@ export const timetables: Timetable[] = [
           { id: 161, time: 2349 },
           { id: 162, time: 2359 },
           { id: 163, time: 2409 },
-          { id: 164, time: 2420, note: "最終" }
-        ]
+          { id: 164, time: 2420, note: "最終" },
+        ],
       },
       {
         direction: "福住方面",
@@ -23835,11 +23842,11 @@ export const timetables: Timetable[] = [
           { id: 155, time: 2335 },
           { id: 156, time: 2345 },
           { id: 157, time: 2355 },
-          { id: 158, time: 2405, note: "最終" }
-        ]
+          { id: 158, time: 2405, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "栄町方面",
         arrivals: [
@@ -23988,8 +23995,8 @@ export const timetables: Timetable[] = [
           { id: 143, time: 2349 },
           { id: 144, time: 2359 },
           { id: 145, time: 2409 },
-          { id: 146, time: 2420, note: "最終" }
-        ]
+          { id: 146, time: 2420, note: "最終" },
+        ],
       },
       {
         direction: "福住方面",
@@ -24133,14 +24140,14 @@ export const timetables: Timetable[] = [
           { id: 137, time: 2335 },
           { id: 138, time: 2345 },
           { id: 139, time: 2355 },
-          { id: 140, time: 2405, note: "最終" }
-        ]
+          { id: 140, time: 2405, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "H05",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "栄町方面",
         arrivals: [
@@ -24307,8 +24314,8 @@ export const timetables: Timetable[] = [
           { id: 161, time: 2347 },
           { id: 162, time: 2357 },
           { id: 163, time: 2407 },
-          { id: 164, time: 2418, note: "最終" }
-        ]
+          { id: 164, time: 2418, note: "最終" },
+        ],
       },
       {
         direction: "福住方面",
@@ -24470,11 +24477,11 @@ export const timetables: Timetable[] = [
           { id: 155, time: 2337 },
           { id: 156, time: 2347 },
           { id: 157, time: 2357 },
-          { id: 158, time: 2407, note: "最終" }
-        ]
+          { id: 158, time: 2407, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "栄町方面",
         arrivals: [
@@ -24623,8 +24630,8 @@ export const timetables: Timetable[] = [
           { id: 143, time: 2347 },
           { id: 144, time: 2357 },
           { id: 145, time: 2407 },
-          { id: 146, time: 2418, note: "最終" }
-        ]
+          { id: 146, time: 2418, note: "最終" },
+        ],
       },
       {
         direction: "福住方面",
@@ -24768,14 +24775,14 @@ export const timetables: Timetable[] = [
           { id: 137, time: 2337 },
           { id: 138, time: 2347 },
           { id: 139, time: 2357 },
-          { id: 140, time: 2407, note: "最終" }
-        ]
+          { id: 140, time: 2407, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "H06",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "栄町方面",
         arrivals: [
@@ -24942,8 +24949,8 @@ export const timetables: Timetable[] = [
           { id: 161, time: 2345 },
           { id: 162, time: 2355 },
           { id: 163, time: 2405 },
-          { id: 164, time: 2416, note: "最終" }
-        ]
+          { id: 164, time: 2416, note: "最終" },
+        ],
       },
       {
         direction: "福住方面",
@@ -25105,11 +25112,11 @@ export const timetables: Timetable[] = [
           { id: 155, time: 2339 },
           { id: 156, time: 2349 },
           { id: 157, time: 2359 },
-          { id: 158, time: 2409, note: "最終" }
-        ]
+          { id: 158, time: 2409, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "栄町方面",
         arrivals: [
@@ -25258,8 +25265,8 @@ export const timetables: Timetable[] = [
           { id: 143, time: 2345 },
           { id: 144, time: 2355 },
           { id: 145, time: 2405 },
-          { id: 146, time: 2416, note: "最終" }
-        ]
+          { id: 146, time: 2416, note: "最終" },
+        ],
       },
       {
         direction: "福住方面",
@@ -25403,14 +25410,14 @@ export const timetables: Timetable[] = [
           { id: 137, time: 2339 },
           { id: 138, time: 2349 },
           { id: 139, time: 2359 },
-          { id: 140, time: 2409, note: "最終" }
-        ]
+          { id: 140, time: 2409, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "H07",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "栄町方面",
         arrivals: [
@@ -25577,8 +25584,8 @@ export const timetables: Timetable[] = [
           { id: 161, time: 2343 },
           { id: 162, time: 2353 },
           { id: 163, time: 2403 },
-          { id: 164, time: 2414, note: "最終" }
-        ]
+          { id: 164, time: 2414, note: "最終" },
+        ],
       },
       {
         direction: "福住方面",
@@ -25740,11 +25747,11 @@ export const timetables: Timetable[] = [
           { id: 155, time: 2341 },
           { id: 156, time: 2351 },
           { id: 157, time: 2401 },
-          { id: 158, time: 2411, note: "最終" }
-        ]
+          { id: 158, time: 2411, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "栄町方面",
         arrivals: [
@@ -25893,8 +25900,8 @@ export const timetables: Timetable[] = [
           { id: 143, time: 2343 },
           { id: 144, time: 2353 },
           { id: 145, time: 2403 },
-          { id: 146, time: 2414, note: "最終" }
-        ]
+          { id: 146, time: 2414, note: "最終" },
+        ],
       },
       {
         direction: "福住方面",
@@ -26038,14 +26045,14 @@ export const timetables: Timetable[] = [
           { id: 137, time: 2341 },
           { id: 138, time: 2351 },
           { id: 139, time: 2401 },
-          { id: 140, time: 2411, note: "最終" }
-        ]
+          { id: 140, time: 2411, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "H08",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "栄町方面",
         arrivals: [
@@ -26206,8 +26213,8 @@ export const timetables: Timetable[] = [
           { id: 155, time: 2341 },
           { id: 156, time: 2351 },
           { id: 157, time: 2401 },
-          { id: 158, time: 2412, note: "最終" }
-        ]
+          { id: 158, time: 2412, note: "最終" },
+        ],
       },
       {
         direction: "福住方面",
@@ -26369,11 +26376,11 @@ export const timetables: Timetable[] = [
           { id: 155, time: 2343 },
           { id: 156, time: 2353 },
           { id: 157, time: 2403 },
-          { id: 158, time: 2413, note: "最終" }
-        ]
+          { id: 158, time: 2413, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "栄町方面",
         arrivals: [
@@ -26516,8 +26523,8 @@ export const timetables: Timetable[] = [
           { id: 137, time: 2341 },
           { id: 138, time: 2351 },
           { id: 139, time: 2401 },
-          { id: 140, time: 2412, note: "最終" }
-        ]
+          { id: 140, time: 2412, note: "最終" },
+        ],
       },
       {
         direction: "福住方面",
@@ -26661,14 +26668,14 @@ export const timetables: Timetable[] = [
           { id: 137, time: 2343 },
           { id: 138, time: 2353 },
           { id: 139, time: 2403 },
-          { id: 140, time: 2413, note: "最終" }
-        ]
+          { id: 140, time: 2413, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "H09",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "栄町方面",
         arrivals: [
@@ -26829,8 +26836,8 @@ export const timetables: Timetable[] = [
           { id: 155, time: 2339 },
           { id: 156, time: 2349 },
           { id: 157, time: 2359 },
-          { id: 158, time: 2410, note: "最終" }
-        ]
+          { id: 158, time: 2410, note: "最終" },
+        ],
       },
       {
         direction: "福住方面",
@@ -26992,11 +26999,11 @@ export const timetables: Timetable[] = [
           { id: 155, time: 2345 },
           { id: 156, time: 2355 },
           { id: 157, time: 2405 },
-          { id: 158, time: 2415, note: "最終" }
-        ]
+          { id: 158, time: 2415, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "栄町方面",
         arrivals: [
@@ -27139,8 +27146,8 @@ export const timetables: Timetable[] = [
           { id: 137, time: 2339 },
           { id: 138, time: 2349 },
           { id: 139, time: 2359 },
-          { id: 140, time: 2410, note: "最終" }
-        ]
+          { id: 140, time: 2410, note: "最終" },
+        ],
       },
       {
         direction: "福住方面",
@@ -27284,14 +27291,14 @@ export const timetables: Timetable[] = [
           { id: 137, time: 2345 },
           { id: 138, time: 2355 },
           { id: 139, time: 2405 },
-          { id: 140, time: 2415, note: "最終" }
-        ]
+          { id: 140, time: 2415, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "H10",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "栄町方面",
         arrivals: [
@@ -27452,8 +27459,8 @@ export const timetables: Timetable[] = [
           { id: 155, time: 2337 },
           { id: 156, time: 2347 },
           { id: 157, time: 2357 },
-          { id: 158, time: 2408, note: "最終" }
-        ]
+          { id: 158, time: 2408, note: "最終" },
+        ],
       },
       {
         direction: "福住方面",
@@ -27615,11 +27622,11 @@ export const timetables: Timetable[] = [
           { id: 155, time: 2347 },
           { id: 156, time: 2357 },
           { id: 157, time: 2407 },
-          { id: 158, time: 2417, note: "最終" }
-        ]
+          { id: 158, time: 2417, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "栄町方面",
         arrivals: [
@@ -27762,8 +27769,8 @@ export const timetables: Timetable[] = [
           { id: 137, time: 2337 },
           { id: 138, time: 2347 },
           { id: 139, time: 2357 },
-          { id: 140, time: 2408, note: "最終" }
-        ]
+          { id: 140, time: 2408, note: "最終" },
+        ],
       },
       {
         direction: "福住方面",
@@ -27907,14 +27914,14 @@ export const timetables: Timetable[] = [
           { id: 137, time: 2347 },
           { id: 138, time: 2357 },
           { id: 139, time: 2407 },
-          { id: 140, time: 2417, note: "最終" }
-        ]
+          { id: 140, time: 2417, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "H11",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "栄町方面",
         arrivals: [
@@ -28075,8 +28082,8 @@ export const timetables: Timetable[] = [
           { id: 155, time: 2335 },
           { id: 156, time: 2345 },
           { id: 157, time: 2355 },
-          { id: 158, time: 2406, note: "最終" }
-        ]
+          { id: 158, time: 2406, note: "最終" },
+        ],
       },
       {
         direction: "福住方面",
@@ -28238,11 +28245,11 @@ export const timetables: Timetable[] = [
           { id: 155, time: 2349 },
           { id: 156, time: 2359 },
           { id: 157, time: 2409 },
-          { id: 158, time: 2419, note: "最終" }
-        ]
+          { id: 158, time: 2419, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "栄町方面",
         arrivals: [
@@ -28385,8 +28392,8 @@ export const timetables: Timetable[] = [
           { id: 137, time: 2335 },
           { id: 138, time: 2345 },
           { id: 139, time: 2355 },
-          { id: 140, time: 2406, note: "最終" }
-        ]
+          { id: 140, time: 2406, note: "最終" },
+        ],
       },
       {
         direction: "福住方面",
@@ -28530,14 +28537,14 @@ export const timetables: Timetable[] = [
           { id: 137, time: 2349 },
           { id: 138, time: 2359 },
           { id: 139, time: 2409 },
-          { id: 140, time: 2419, note: "最終" }
-        ]
+          { id: 140, time: 2419, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "H12",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "栄町方面",
         arrivals: [
@@ -28698,8 +28705,8 @@ export const timetables: Timetable[] = [
           { id: 155, time: 2334 },
           { id: 156, time: 2344 },
           { id: 157, time: 2354 },
-          { id: 158, time: 2404, note: "最終" }
-        ]
+          { id: 158, time: 2404, note: "最終" },
+        ],
       },
       {
         direction: "福住方面",
@@ -28861,11 +28868,11 @@ export const timetables: Timetable[] = [
           { id: 155, time: 2351 },
           { id: 156, time: 2401 },
           { id: 157, time: 2411 },
-          { id: 158, time: 2421, note: "最終" }
-        ]
+          { id: 158, time: 2421, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "栄町方面",
         arrivals: [
@@ -29008,8 +29015,8 @@ export const timetables: Timetable[] = [
           { id: 137, time: 2334 },
           { id: 138, time: 2344 },
           { id: 139, time: 2354 },
-          { id: 140, time: 2404, note: "最終" }
-        ]
+          { id: 140, time: 2404, note: "最終" },
+        ],
       },
       {
         direction: "福住方面",
@@ -29153,14 +29160,14 @@ export const timetables: Timetable[] = [
           { id: 137, time: 2351 },
           { id: 138, time: 2401 },
           { id: 139, time: 2411 },
-          { id: 140, time: 2421, note: "最終" }
-        ]
+          { id: 140, time: 2421, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "H13",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "栄町方面",
         arrivals: [
@@ -29321,8 +29328,8 @@ export const timetables: Timetable[] = [
           { id: 155, time: 2331 },
           { id: 156, time: 2341 },
           { id: 157, time: 2351 },
-          { id: 158, time: 2402, note: "最終" }
-        ]
+          { id: 158, time: 2402, note: "最終" },
+        ],
       },
       {
         direction: "福住方面",
@@ -29484,11 +29491,11 @@ export const timetables: Timetable[] = [
           { id: 155, time: 2353 },
           { id: 156, time: 2403 },
           { id: 157, time: 2413 },
-          { id: 158, time: 2423, note: "最終" }
-        ]
+          { id: 158, time: 2423, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "栄町方面",
         arrivals: [
@@ -29631,8 +29638,8 @@ export const timetables: Timetable[] = [
           { id: 137, time: 2331 },
           { id: 138, time: 2341 },
           { id: 139, time: 2351 },
-          { id: 140, time: 2402, note: "最終" }
-        ]
+          { id: 140, time: 2402, note: "最終" },
+        ],
       },
       {
         direction: "福住方面",
@@ -29776,14 +29783,14 @@ export const timetables: Timetable[] = [
           { id: 137, time: 2353 },
           { id: 138, time: 2403 },
           { id: 139, time: 2413 },
-          { id: 140, time: 2423, note: "最終" }
-        ]
+          { id: 140, time: 2423, note: "最終" },
+        ],
       },
     ],
   },
   {
     id: "H14",
-    weekday_diagrams: [
+    weekdayDiagrams: [
       {
         direction: "栄町方面",
         arrivals: [
@@ -29944,11 +29951,11 @@ export const timetables: Timetable[] = [
           { id: 155, time: 2329 },
           { id: 156, time: 2339 },
           { id: 157, time: 2349 },
-          { id: 158, time: 2400, note: "最終" }
-        ]
+          { id: 158, time: 2400, note: "最終" },
+        ],
       },
     ],
-    holiday_diagrams: [
+    holidayDiagrams: [
       {
         direction: "栄町方面",
         arrivals: [
@@ -30091,9 +30098,41 @@ export const timetables: Timetable[] = [
           { id: 137, time: 2329 },
           { id: 138, time: 2339 },
           { id: 139, time: 2349 },
-          { id: 140, time: 2400, note: "最終" }
-        ]
+          { id: 140, time: 2400, note: "最終" },
+        ],
       },
     ],
   },
 ];
+
+/**
+ * 指定された駅について、指定された日時の時刻表を取得します。
+ * @param staion 時刻表を取得する対象の駅。
+ * @param referenceDatetime 時刻表取得の基準となる日時。
+ */
+export const getDiagrams = (stationId: string, referenceDatetime: Date): Diagram[] => {
+  let tempDatetime = new Date(referenceDatetime.getTime());
+  let hour = tempDatetime.getHours();
+
+  // 0時の時は24時間表記にするために1日前に戻す
+  if (hour === 0) {
+    tempDatetime.setDate(tempDatetime.getDate() - 1);
+    hour = 24;
+  }
+
+  // 平日判定
+  const todayIsWeekday = isWeekday(tempDatetime);
+
+  // 時刻表取得
+  const diagrams = todayIsWeekday
+    ? TIMETABLES.find((t) => t.id === stationId)?.weekdayDiagrams
+    : TIMETABLES.find((t) => t.id === stationId)?.holidayDiagrams;
+  if (!diagrams) {
+    throw new Error("時刻表データの取得に失敗しました。");
+  }
+
+  return diagrams.map((d) => ({
+    direction: d.direction,
+    arrivals: d.arrivals.filter((a) => a.time > hour * 100 + tempDatetime.getMinutes()).sort((a) => a.time),
+  }));
+};
