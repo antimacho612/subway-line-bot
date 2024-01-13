@@ -1,10 +1,10 @@
-import * as timetables from "./timetables";
+import * as timetables from '../src/timetables';
 
-test("getDiagramsメソッド", () => {
-  expect(timetables.getDiagrams("N01", new Date(2020, 0, 5, 5))).toEqual([
+test('getDiagrams関数', () => {
+  expect(timetables.getDiagrams('N01', new Date(2020, 0, 5, 5))).toEqual([
     {
       arrivals: [
-        { id: 1, time: 600, note: "始発" },
+        { id: 1, time: 600, note: '始発' },
         { id: 2, time: 610 },
         { id: 3, time: 620 },
         { id: 4, time: 630 },
@@ -153,11 +153,9 @@ test("getDiagramsメソッド", () => {
         { id: 147, time: 2335 },
         { id: 148, time: 2343 },
         { id: 149, time: 2351 },
-        { id: 150, time: 2400, note: "最終" },
+        { id: 150, time: 2400, note: '最終' },
       ],
-      direction: "真駒内方面",
+      direction: '真駒内方面',
     },
   ]);
-
-  // ToDo: add more patterns
 });
