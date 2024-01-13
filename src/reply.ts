@@ -1,50 +1,69 @@
-import { FlexMessage, TextMessage } from "@line/bot-sdk";
-import { specifyStationById, specifyStationsByName } from "./data/stations";
-import { getDiagrams } from "./data/timetables";
-import { getLineById } from "./data/lines";
-import { notSupportedMessageTypeErrorMessage, stationNotFoundErrorMessage } from "./messageTemplates/errorMessageTemplate";
-import { SubwayStationDiagrams, subwayStationDiagramsMessageTemplate } from "./messageTemplates/subwayStationDiagramsMessageTemplate";
+import { TextMessage } from '@line/bot-sdk';
+import { createDiagramsMessage } from './diagramsMessage';
+import { specifyStationById, specifyStationsByName } from './stations';
+import { getDiagrams } from './timetables';
+import { getLineById } from './lines';
+import { DiagramsMessageData } from './types';
 
-export const replyToTextMessage = (stationName: string): FlexMessage | TextMessage => {
+const createStationNotFoundMessage = (): TextMessage => ({
+  type: 'text',
+  text: '駅を特定できませんでした $',
+  emojis: [
+    {
+      index: 13,
+      productId: '5ac1bfd5040ab15980c9b435',
+      emojiId: '024',
+    },
+  ],
+});
+
+export const replyToTextMessage = (stationName: string) => {
   // 基準となる日時 = 現在日付
   const referenceDatetime = new Date(Date.now() + (new Date().getTimezoneOffset() + 9 * 60) * 60 * 1000);
 
   // 駅特定
   const stations = specifyStationsByName(stationName);
-  if (!stations.length) {
-    return stationNotFoundErrorMessage;
-  }
+  if (!stations.length) return createStationNotFoundMessage();
 
   // 駅ごとに線の情報と時刻表を取得
-  const stationDiagrams: SubwayStationDiagrams[] = stations.map((station) => {
-    return {
-      station: station,
-      line: getLineById(station.lineId),
-      referenceDatetime: referenceDatetime,
-      diagrams: getDiagrams(station.id, referenceDatetime),
-    };
+  const messageDataList: DiagramsMessageData[] = stations.map((station) => {
+    // 線
+    const line = getLineById(station.lineId);
+    if (!line) throw new Error(`線情報の取得に失敗しました。 lineId: ${station.lineId}`);
+
+    // ダイヤ
+    const diagrams = getDiagrams(station.id, referenceDatetime);
+
+    return { station, line, referenceDatetime, diagrams };
   });
 
-  // FlexMessage作成
-  return subwayStationDiagramsMessageTemplate(stationDiagrams);
+  return createDiagramsMessage(messageDataList);
 };
 
-export const replyToPostbackMessage = (stationId: string, referenceDatetime: Date): FlexMessage | TextMessage => {
+export const replyToPostbackMessage = (stationId: string, referenceDatetime: Date) => {
   // 駅特定
   const station = specifyStationById(stationId);
-  if (!station) {
-    return stationNotFoundErrorMessage;
-  }
+  if (!station) return createStationNotFoundMessage();
+
+  // 線
+  const line = getLineById(station.lineId);
+  if (!line) throw new Error(`線情報の取得に失敗しました。 lineId: ${station.lineId}`);
+
+  // ダイヤ
+  const diagrams = getDiagrams(station.id, referenceDatetime);
 
   // 線の情報と時刻表を取得
-  const stationDiagrams: SubwayStationDiagrams = {
-    station: station,
-    line: getLineById(station.lineId),
-    referenceDatetime: referenceDatetime,
-    diagrams: getDiagrams(station.id, referenceDatetime),
+  const stationDiagrams: DiagramsMessageData = {
+    station,
+    line,
+    referenceDatetime,
+    diagrams,
   };
 
-  return subwayStationDiagramsMessageTemplate([stationDiagrams]);
+  return createDiagramsMessage([stationDiagrams]);
 };
 
-export const relpyToOtherMessage = () => notSupportedMessageTypeErrorMessage;
+export const replyToOtherMessage = (): TextMessage => ({
+  type: 'text',
+  text: 'このメッセージ形式には対応していません',
+});

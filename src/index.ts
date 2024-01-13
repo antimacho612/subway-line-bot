@@ -1,59 +1,75 @@
-import { Client, ClientConfig, MiddlewareConfig, middleware, WebhookEvent } from "@line/bot-sdk";
-import express, { Request, Response } from "express";
-import { replyToPostbackMessage, replyToTextMessage, relpyToOtherMessage } from "./reply";
+import { ClientConfig, MiddlewareConfig, middleware, messagingApi, WebhookEvent } from '@line/bot-sdk';
+import express, { Application, Request, Response } from 'express';
+import { replyToPostbackMessage, replyToTextMessage, replyToOtherMessage } from './reply';
 
-require("dotenv").config();
+import 'dotenv/config';
 
 const PORT = process.env.PORT || 3000;
 
-const config: ClientConfig = {
-  channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN || "",
-  channelSecret: process.env.LINE_CHANNEL_SECRET || "",
+const clientConfig: ClientConfig = {
+  channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN || '',
 };
 
 const middlewareConfig: MiddlewareConfig = {
-  channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN || "",
-  channelSecret: process.env.LINE_CHANNEL_SECRET || "",
+  channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN || '',
+  channelSecret: process.env.LINE_CHANNEL_SECRET || '',
 };
 
-const app = express();
-const client = new Client(config);
+const client = new messagingApi.MessagingApiClient(clientConfig);
 
-const reply = async (client: Client, event: WebhookEvent) => {
-  if (event.type !== "message" && event.type !== "postback") {
-    return;
-  }
+const app: Application = express();
 
-  const { replyToken } = event;
+const reply = async (event: WebhookEvent) => {
+  if (event.type !== 'message' && event.type !== 'postback') return;
+
   let message;
 
-  if (event.type === "message" && event.message.type === "text") {
+  if (event.type === 'message' && event.message.type === 'text') {
     message = replyToTextMessage(event.message.text);
-  } else if (event.type === "postback" && event.postback.params && "datetime" in event.postback.params && event.postback.params.datetime) {
+  } else if (event.type === 'postback' && event.postback.params && 'datetime' in event.postback.params && event.postback.params.datetime) {
     message = replyToPostbackMessage(event.postback.data, new Date(event.postback.params.datetime));
   } else {
-    message = relpyToOtherMessage();
+    message = replyToOtherMessage();
   }
 
-  await client.replyMessage(replyToken, message);
+  await client.replyMessage({
+    replyToken: event.replyToken as string,
+    messages: [message],
+  });
 };
 
 // Testing Routing
-app.get("/", (_req: Request, res: Response): void => {
-  res.sendStatus(200);
-});
-
-// API Routing
-app.post("/webhook", middleware(middlewareConfig), async (req: Request, _res: Response): Promise<void> => {
-  const events: WebhookEvent[] = req.body.events;
-
-  events.map(async (event) => {
-    try {
-      await reply(client, event);
-    } catch (err) {
-      console.error(err);
-    }
+app.get('/', async (_: Request, res: Response): Promise<Response> => {
+  return res.status(200).json({
+    status: 'success',
+    message: 'Connected successfully!',
   });
 });
 
-app.listen(PORT, () => console.log(`Server is up on port ${PORT}`));
+// API Routing
+app.post('/webhook', middleware(middlewareConfig), async (req: Request, res: Response): Promise<Response> => {
+  const events: WebhookEvent[] = req.body.events;
+
+  const results = await Promise.all(
+    events.map(async (event) => {
+      try {
+        await reply(event);
+      } catch (e) {
+        if (e instanceof Error) {
+          console.error(e);
+        }
+
+        return res.status(500).json({ status: 'error' });
+      }
+    })
+  );
+
+  return res.status(200).json({
+    status: 'success',
+    results,
+  });
+});
+
+app.listen(PORT, () => {
+  console.log(`Application is live and listening on port ${PORT}`);
+});
