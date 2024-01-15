@@ -36,7 +36,3 @@ Botから返信された時刻表メッセージから、日時を指定して�
 ![スクリーンショット2](./screenshots/screenshot2.png)
 
 ![スクリーンショット3](./screenshots/screenshot3.png)
-
-## 3. ToDo
-
-- [ ] 新しいホスティング先を探す
