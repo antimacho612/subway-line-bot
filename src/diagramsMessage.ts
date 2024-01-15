@@ -153,6 +153,7 @@ const createMainContent = (diagram: Diagram): FlexBox => ({
 const createBodyFlexBox = (data: DiagramsMessageData): FlexBox => ({
   type: 'box',
   layout: 'vertical',
+  paddingBottom: 'sm',
   contents: [
     {
       type: 'text',
@@ -179,6 +180,16 @@ const createBodyFlexBox = (data: DiagramsMessageData): FlexBox => ({
       layout: 'vertical',
       contents: data.diagrams.map((diagram) => createMainContent(diagram)),
       spacing: 'sm',
+    },
+    {
+      type: 'button',
+      height: 'sm',
+      style: 'link',
+      action: {
+        type: 'uri',
+        label: '札幌市交通局HP 時刻表へ',
+        uri: data.station.url,
+      },
     },
   ],
 });

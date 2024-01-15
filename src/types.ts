@@ -11,6 +11,7 @@ export type Station = {
   lineId: 'N' | 'T' | 'H';
   officialName: string;
   commonNames: string[];
+  url: string;
 };
 
 export type Arrival = {
