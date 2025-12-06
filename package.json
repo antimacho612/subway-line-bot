@@ -2,7 +2,7 @@
   "name": "subway-line-bot",
   "version": "1.0.0",
   "private": true,
-  "author": "antimacho612 <antimacho612@gmail.com>",
+  "author": "antimacho612",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
