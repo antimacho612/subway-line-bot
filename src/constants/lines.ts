@@ -1,5 +1,8 @@
-import { Line } from '../types';
+import type { Line } from '../types';
 
+/**
+ * 路線情報
+ */
 const LINES: ReadonlyArray<Readonly<Line>> = [
   {
     id: 'N',

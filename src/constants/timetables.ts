@@ -1,5 +1,8 @@
-import { Timetable } from '../types';
+import type { Timetable } from '../types';
 
+/**
+ * 時刻表情報
+ */
 const TIMETABLES: ReadonlyArray<Readonly<Timetable>> = [
   {
     id: 'N01',

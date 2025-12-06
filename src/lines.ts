@@ -1,8 +1,11 @@
 import LINES from './constants/lines';
-import { LineId } from './types';
+import type { Line, LineId } from './types';
 
 /**
- * 駅のIDから線の情報を取得する
- * @param id 駅のID
+ * 駅のIDから路線情報を取得する
+ * @param id - 駅のID
+ * @returns 路線情報、存在しない場合はundefined
  */
-export const getLineById = (id: LineId) => LINES.find((line) => line.id === id);
+export function getLineById(id: LineId): Readonly<Line> | undefined {
+  return LINES.find((line) => line.id === id);
+}

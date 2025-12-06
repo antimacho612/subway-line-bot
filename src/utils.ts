@@ -3,29 +3,38 @@ import JapaneseHolidays from 'japanese-holidays';
 /**
  * 与えられた日付が平日かどうかを判定する
  * @param date 判定対象日付
+ * @returns 平日であればtrue、休日であればfalse
  */
-export const isWeekday = (date: Date): boolean => {
-  if (date.getDay() === 0 || date.getDay() === 6) return false;
-  else return !JapaneseHolidays.isHoliday(date);
-};
+export function isWeekday(date: Date): boolean {
+  if (date.getDay() === 0 || date.getDay() === 6) {
+    return false;
+  } else {
+    return !JapaneseHolidays.isHoliday(date);
+  }
+}
 
 /**
  * カタカナをひらがなに変換する
  * @param str 変換対象文字列
+ * @return 変換後文字列
  */
-export const katakana2Hiragana = (str: string) => str.replace(/[\u30a1-\u30f6]/g, (m) => String.fromCharCode(m.charCodeAt(0) - 0x60));
+export function katakana2Hiragana(str: string): string {
+  return str.replace(/[\u30a1-\u30f6]/g, (m) => String.fromCharCode(m.charCodeAt(0) - 0x60));
+}
 
 /**
  * 全角数字を半角数字に変換する
  * @param str 変換対象文字列
  */
-export const zenkakuNum2HankakuNum = (str: string) => str.replace(/[０-９]/g, (s) => String.fromCharCode(s.charCodeAt(0) - 0xfee0));
+export function zenkakuNum2HankakuNum(str: string): string {
+  return str.replace(/[０-９]/g, (s) => String.fromCharCode(s.charCodeAt(0) - 0xfee0));
+}
 
 /**
  * 半角かな文字を全角かな文字に変換する
  * @param str 変換対象文字列
  */
-export const hankakuKana2Zenkakukana = (str: string) => {
+export function hankakuKana2Zenkakukana(str: string): string {
   const kanaMap: { [key: string]: string } = {
     ｶﾞ: 'ガ',
     ｷﾞ: 'ギ',
@@ -123,4 +132,4 @@ export const hankakuKana2Zenkakukana = (str: string) => {
     .replace(reg, (m) => kanaMap[m])
     .replace(/ﾞ/g, '゛')
     .replace(/ﾟ/g, '゜');
-};
+}

@@ -1,23 +1,35 @@
-import { TextMessage } from '@line/bot-sdk';
+import type { messagingApi, TextMessage } from '@line/bot-sdk';
 import { createDiagramsMessage } from './diagramsMessage';
+import { getLineById } from './lines';
 import { specifyStationById, specifyStationsByName } from './stations';
 import { getDiagrams } from './timetables';
-import { getLineById } from './lines';
-import { DiagramsMessageData } from './types';
+import type { DiagramsMessageData } from './types';
 
-const createStationNotFoundMessage = (): TextMessage => ({
-  type: 'text',
-  text: '駅を特定できませんでした $',
-  emojis: [
-    {
-      index: 13,
-      productId: '5ac1bfd5040ab15980c9b435',
-      emojiId: '024',
-    },
-  ],
-});
+/**
+ * 駅が特定できなかった場合の返信メッセージを生成する
+ * @returns 駅が特定できなかったことを示すテキストメッセージ
+ */
+function createStationNotFoundMessage(): messagingApi.TextMessage {
+  return {
+    type: 'text',
+    text: '駅を特定できませんでした $',
+    emojis: [
+      {
+        index: 13,
+        productId: '5ac1bfd5040ab15980c9b435',
+        emojiId: '024',
+      },
+    ],
+  };
+}
 
-export const replyToTextMessage = (stationName: string) => {
+/**
+ * テキストメッセージに対する返信メッセージを生成する
+ * @param stationName - 駅名
+ * @returns 時刻表メッセージ、または駅が見つからない場合はエラーメッセージ
+ * @throws {Error} 線情報の取得に失敗した場合
+ */
+export function replyToTextMessage(stationName: string): messagingApi.FlexMessage | messagingApi.TextMessage {
   // 基準となる日時 = 現在日付
   const referenceDatetime = new Date(Date.now() + (new Date().getTimezoneOffset() + 9 * 60) * 60 * 1000);
 
@@ -38,16 +50,31 @@ export const replyToTextMessage = (stationName: string) => {
   });
 
   return createDiagramsMessage(messageDataList);
-};
+}
 
-export const replyToPostbackMessage = (stationId: string, referenceDatetime: Date) => {
+/**
+ * ポストバックメッセージに対する返信メッセージを生成する
+ *
+ * @param stationId - 駅ID
+ * @param referenceDatetime - 基準日時
+ * @returns 時刻表メッセージ、または駅が見つからない場合はエラーメッセージ
+ * @throws {Error} 線情報の取得に失敗した場合
+ */
+export function replyToPostbackMessage(
+  stationId: string,
+  referenceDatetime: Date
+): messagingApi.FlexMessage | messagingApi.TextMessage {
   // 駅特定
   const station = specifyStationById(stationId);
-  if (!station) return createStationNotFoundMessage();
+  if (!station) {
+    return createStationNotFoundMessage();
+  }
 
-  // 線
+  // 路線
   const line = getLineById(station.lineId);
-  if (!line) throw new Error(`線情報の取得に失敗しました。 lineId: ${station.lineId}`);
+  if (!line) {
+    throw new Error(`路線情報の取得に失敗しました。 lineId: ${station.lineId}`);
+  }
 
   // ダイヤ
   const diagrams = getDiagrams(station.id, referenceDatetime);
@@ -61,9 +88,11 @@ export const replyToPostbackMessage = (stationId: string, referenceDatetime: Dat
   };
 
   return createDiagramsMessage([stationDiagrams]);
-};
+}
 
-export const replyToOtherMessage = (): TextMessage => ({
-  type: 'text',
-  text: 'このメッセージ形式には対応していません',
-});
+export function replyToOtherMessage(): TextMessage {
+  return {
+    type: 'text',
+    text: 'このメッセージ形式には対応していません',
+  };
+}
