@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest';
 import * as utils from '../src/utils';
 
 describe('isWeekday関数', () => {

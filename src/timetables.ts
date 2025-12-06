@@ -1,33 +1,33 @@
 import TIMETABLES from './constants/timetables';
+import type { Diagram } from './types';
 import { isWeekday } from './utils';
-import { Diagram } from './types';
 
 /**
  * 指定された駅の時刻表を取得する
- * @param stationId 時刻表を取得する駅のID
- * @param referenceDatetime 時刻表取得時に基準とする日時
+ * @param stationId - 時刻表を取得する駅のID
+ * @param referenceDatetime - 時刻表取得時に基準とする日時
+ * @returns 指定された駅の時刻表
  */
-export const getDiagrams = (stationId: string, referenceDatetime: Date): Diagram[] => {
-  const tempDatetime = new Date(referenceDatetime.getTime());
+export function getDiagrams(stationId: string, referenceDatetime: Date): Diagram[] {
+  const tempDatetime = new Date(referenceDatetime);
   let hour = tempDatetime.getHours();
-  // 0時の時は24時間表記にするために1日前に戻す
+
+  // 0時の場合は前日に戻し、24時として扱う
   if (hour === 0) {
     tempDatetime.setDate(tempDatetime.getDate() - 1);
     hour = 24;
   }
   const borderTime = hour * 100 + tempDatetime.getMinutes();
 
-  // 平日判定
-  const todayIsWeekday = isWeekday(tempDatetime);
+  const timetable = TIMETABLES.find((t) => t.id === stationId);
+  if (!timetable) {
+    throw new Error('時刻表の取得に失敗しました。');
+  }
 
-  // 時刻表取得
-  const diagrams = todayIsWeekday
-    ? TIMETABLES.find((timetable) => timetable.id === stationId)?.weekdayDiagrams
-    : TIMETABLES.find((timetable) => timetable.id === stationId)?.holidayDiagrams;
-  if (!diagrams) throw new Error('時刻表の取得に失敗しました。');
+  const diagrams = isWeekday(tempDatetime) ? timetable.weekdayDiagrams : timetable.holidayDiagrams;
 
-  return diagrams.map((d) => ({
-    direction: d.direction,
-    arrivals: d.arrivals.filter((arrival) => arrival.time > borderTime).sort((arrivalA, arrivalB) => arrivalA.time - arrivalB.time),
+  return diagrams.map(({ direction, arrivals }) => ({
+    direction,
+    arrivals: arrivals.filter(({ time }) => time > borderTime).sort((a, b) => a.time - b.time),
   }));
-};
+}

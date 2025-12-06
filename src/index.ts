@@ -1,6 +1,6 @@
-import { ClientConfig, MiddlewareConfig, middleware, messagingApi, WebhookEvent } from '@line/bot-sdk';
-import express, { Application, Request, Response } from 'express';
-import { replyToPostbackMessage, replyToTextMessage, replyToOtherMessage } from './reply';
+import { type ClientConfig, type MiddlewareConfig, messagingApi, middleware, type WebhookEvent } from '@line/bot-sdk';
+import express, { type Application, type Request, type Response } from 'express';
+import { replyToOtherMessage, replyToPostbackMessage, replyToTextMessage } from './reply';
 
 import 'dotenv/config';
 
@@ -19,24 +19,30 @@ const client = new messagingApi.MessagingApiClient(clientConfig);
 
 const app: Application = express();
 
-const reply = async (event: WebhookEvent) => {
-  if (event.type !== 'message' && event.type !== 'postback') return;
+async function reply(event: WebhookEvent) {
+  if (event.type !== 'message' && event.type !== 'postback') {
+    return;
+  }
 
-  let message;
-
+  let message: messagingApi.Message;
   if (event.type === 'message' && event.message.type === 'text') {
     message = replyToTextMessage(event.message.text);
-  } else if (event.type === 'postback' && event.postback.params && 'datetime' in event.postback.params && event.postback.params.datetime) {
+  } else if (
+    event.type === 'postback' &&
+    event.postback.params &&
+    'datetime' in event.postback.params &&
+    event.postback.params.datetime
+  ) {
     message = replyToPostbackMessage(event.postback.data, new Date(event.postback.params.datetime));
   } else {
     message = replyToOtherMessage();
   }
 
   await client.replyMessage({
-    replyToken: event.replyToken as string,
+    replyToken: event.replyToken,
     messages: [message],
   });
-};
+}
 
 // Testing Routing
 app.get('/', async (_: Request, res: Response): Promise<Response> => {

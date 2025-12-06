@@ -1,5 +1,8 @@
-import { Station } from '../types';
+import type { Station } from '../types';
 
+/**
+ * 駅情報
+ */
 const STATIONS: ReadonlyArray<Readonly<Station>> = [
   {
     id: 'N01',
@@ -47,14 +50,32 @@ const STATIONS: ReadonlyArray<Readonly<Station>> = [
     id: 'N04',
     lineId: 'N',
     officialName: '北18条駅',
-    commonNames: ['北18条', '北十八条', 'きた18じょう', 'きたじゅうはちじょう', '北18', '北十八', 'きた18', 'きたじゅうはち'],
+    commonNames: [
+      '北18条',
+      '北十八条',
+      'きた18じょう',
+      'きたじゅうはちじょう',
+      '北18',
+      '北十八',
+      'きた18',
+      'きたじゅうはち',
+    ],
     url: 'https://www.city.sapporo.jp/st/subway/route_time/h26/n04.html',
   },
   {
     id: 'N05',
     lineId: 'N',
     officialName: '北12条駅',
-    commonNames: ['北12条', '北十二条', 'きた12じょう', 'きたじゅうにじょう', '北12', '北十二', 'きた12', 'きたじゅうに'],
+    commonNames: [
+      '北12条',
+      '北十二条',
+      'きた12じょう',
+      'きたじゅうにじょう',
+      '北12',
+      '北十二',
+      'きた12',
+      'きたじゅうに',
+    ],
     url: 'https://www.city.sapporo.jp/st/subway/route_time/h26/n05.html',
   },
   {
@@ -166,7 +187,16 @@ const STATIONS: ReadonlyArray<Readonly<Station>> = [
     id: 'T05',
     lineId: 'T',
     officialName: '西28丁目駅',
-    commonNames: ['西28丁目', '西二十八丁目', 'にしにじゅうはっちょうめ', 'にし28ちょうめ', '西28', '西二十八', 'にし28', 'にしにじゅうはち'],
+    commonNames: [
+      '西28丁目',
+      '西二十八丁目',
+      'にしにじゅうはっちょうめ',
+      'にし28ちょうめ',
+      '西28',
+      '西二十八',
+      'にし28',
+      'にしにじゅうはち',
+    ],
     url: 'https://www.city.sapporo.jp/st/subway/route_time/h26/t05.html',
   },
   {
@@ -180,14 +210,32 @@ const STATIONS: ReadonlyArray<Readonly<Station>> = [
     id: 'T07',
     lineId: 'T',
     officialName: '西18丁目駅',
-    commonNames: ['西18丁目', '西十八丁目', 'にしじゅうはっちょうめ', 'にし18ちょうめ', '西18', '西十八', 'にし18', 'にしじゅうはち'],
+    commonNames: [
+      '西18丁目',
+      '西十八丁目',
+      'にしじゅうはっちょうめ',
+      'にし18ちょうめ',
+      '西18',
+      '西十八',
+      'にし18',
+      'にしじゅうはち',
+    ],
     url: 'https://www.city.sapporo.jp/st/subway/route_time/h26/t07.html',
   },
   {
     id: 'T08',
     lineId: 'T',
     officialName: '西11丁目駅',
-    commonNames: ['西11丁目', '西十一丁目', 'にしじゅういっちょうめ', 'にし11ちょうめ', '西11', '西十一', 'にし11', 'にしじゅういち'],
+    commonNames: [
+      '西11丁目',
+      '西十一丁目',
+      'にしじゅういっちょうめ',
+      'にし11ちょうめ',
+      '西11',
+      '西十一',
+      'にし11',
+      'にしじゅういち',
+    ],
     url: 'https://www.city.sapporo.jp/st/subway/route_time/h26/t08.html',
   },
   {
@@ -247,14 +295,30 @@ const STATIONS: ReadonlyArray<Readonly<Station>> = [
     id: 'T15',
     lineId: 'T',
     officialName: '南郷13丁目駅',
-    commonNames: ['南郷13丁目', '南郷十三丁目', 'なんごう13ちょうめ', 'なんごうじゅうさんちょうめ', '南郷13', '南郷十三', 'なんごうじゅうさん'],
+    commonNames: [
+      '南郷13丁目',
+      '南郷十三丁目',
+      'なんごう13ちょうめ',
+      'なんごうじゅうさんちょうめ',
+      '南郷13',
+      '南郷十三',
+      'なんごうじゅうさん',
+    ],
     url: 'https://www.city.sapporo.jp/st/subway/route_time/h26/t15.html',
   },
   {
     id: 'T16',
     lineId: 'T',
     officialName: '南郷18丁目駅',
-    commonNames: ['南郷18丁目', '南郷十八丁目', 'なんごう18ちょうめ', 'なんごうじゅうはっちょうめ', '南郷18', '南郷十八', 'なんごうじゅうはち'],
+    commonNames: [
+      '南郷18丁目',
+      '南郷十八丁目',
+      'なんごう18ちょうめ',
+      'なんごうじゅうはっちょうめ',
+      '南郷18',
+      '南郷十八',
+      'なんごうじゅうはち',
+    ],
     url: 'https://www.city.sapporo.jp/st/subway/route_time/h26/t16.html',
   },
   {
