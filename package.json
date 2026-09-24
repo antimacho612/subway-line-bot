@@ -23,11 +23,11 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.3.8",
-    "@types/express": "^5.0.6",
-    "@types/japanese-holidays": "^1.0.3",
-    "@types/node": "^24.10.1",
-    "rimraf": "^6.1.2",
-    "typescript": "^5.9.3",
+    "@types/express": "5.0.6",
+    "@types/japanese-holidays": "1.0.3",
+    "@types/node": "24.10.1",
+    "rimraf": "6.1.2",
+    "typescript": "5.9.3",
     "vitest": "^4.0.15"
   }
 }
