@@ -16,7 +16,7 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@line/bot-sdk": "^10.5.0",
+    "@line/bot-sdk": "^11.0.0",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "japanese-holidays": "^1.0.10"
