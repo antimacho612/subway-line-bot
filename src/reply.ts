@@ -83,3 +83,14 @@ export function replyToOtherMessage(): messagingApi.TextMessage {
     text: 'このメッセージ形式には対応していません',
   };
 }
+
+/**
+ * 返信メッセージの生成に失敗した場合のフォールバックメッセージを生成する
+ * @returns 時刻表の取得に失敗したことを示すテキストメッセージ
+ */
+export function replyToFailure(): messagingApi.TextMessage {
+  return {
+    type: 'text',
+    text: '時刻表の取得に失敗しました',
+  };
+}

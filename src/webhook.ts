@@ -7,10 +7,25 @@ import {
   type webhook,
 } from '@line/bot-sdk';
 import express, { type Application, type NextFunction, type Request, type Response } from 'express';
-import { replyToOtherMessage, replyToPostbackMessage, replyToTextMessage } from './reply';
+import { replyToFailure, replyToOtherMessage, replyToPostbackMessage, replyToTextMessage } from './reply';
 import { parsePostbackDatetime } from './serviceDate';
 
 export type ReplyClient = Pick<messagingApi.MessagingApiClient, 'replyMessage'>;
+
+function createReplyMessage(event: webhook.MessageEvent | webhook.PostbackEvent): messagingApi.Message {
+  if (event.type === 'message' && event.message.type === 'text') {
+    return replyToTextMessage(event.message.text);
+  }
+  if (
+    event.type === 'postback' &&
+    event.postback.params &&
+    'datetime' in event.postback.params &&
+    event.postback.params.datetime
+  ) {
+    return replyToPostbackMessage(event.postback.data, parsePostbackDatetime(event.postback.params.datetime));
+  }
+  return replyToOtherMessage();
+}
 
 export async function reply(client: ReplyClient, event: webhook.Event): Promise<void> {
   if ((event.type !== 'message' && event.type !== 'postback') || !event.replyToken) {
@@ -23,19 +38,15 @@ export async function reply(client: ReplyClient, event: webhook.Event): Promise<
   }
 
   let message: messagingApi.Message;
-  if (event.type === 'message' && event.message.type === 'text') {
-    message = replyToTextMessage(event.message.text);
-  } else if (
-    event.type === 'postback' &&
-    event.postback.params &&
-    'datetime' in event.postback.params &&
-    event.postback.params.datetime
-  ) {
-    message = replyToPostbackMessage(event.postback.data, parsePostbackDatetime(event.postback.params.datetime));
-  } else {
-    message = replyToOtherMessage();
+  try {
+    message = createReplyMessage(event);
+  } catch (err) {
+    // replyToken はまだ有効なので、ユーザーには汎用メッセージを返す
+    console.error('Failed to create reply message:', err);
+    message = replyToFailure();
   }
 
+  // replyMessage 自体の失敗は再送せず、呼び出し元でログに残すだけにする
   await client.replyMessage({
     replyToken: event.replyToken,
     messages: [message],
