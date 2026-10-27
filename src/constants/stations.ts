@@ -332,7 +332,7 @@ const STATIONS: ReadonlyArray<Readonly<Station>> = [
     id: 'T18',
     lineId: 'T',
     officialName: 'ひばりが丘駅',
-    commonNames: ['ひばりが丘', 'ひばりヶ丘', 'ひばりがおか'],
+    commonNames: ['ひばりが丘', 'ひばりヶ丘', 'ひばりケ丘', 'ひばりがおか'],
     url: 'https://www.city.sapporo.jp/st/subway/route_time/h26/t18.html',
   },
   {

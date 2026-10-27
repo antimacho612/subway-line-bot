@@ -1,15 +1,27 @@
 import JapaneseHolidays from 'japanese-holidays';
+import type { PlainDate } from './types';
+
+/**
+ * 年月日の曜日を取得する
+ * @param date 対象の年月日
+ * @returns 曜日（0: 日曜 〜 6: 土曜）
+ */
+export function getDayOfWeek(date: PlainDate): number {
+  return new Date(Date.UTC(date.year, date.month - 1, date.day)).getUTCDay();
+}
 
 /**
  * 与えられた日付が平日かどうかを判定する
  * @param date 判定対象日付
  * @returns 平日であればtrue、休日であればfalse
  */
-export function isWeekday(date: Date): boolean {
-  if (date.getDay() === 0 || date.getDay() === 6) {
+export function isWeekday(date: PlainDate): boolean {
+  const dayOfWeek = getDayOfWeek(date);
+  if (dayOfWeek === 0 || dayOfWeek === 6) {
     return false;
   } else {
-    return !JapaneseHolidays.isHoliday(date);
+    // isHolidayAt は JST で判定するため、UTC 0:00（JST 9:00）を渡せば同じ日付になる
+    return !JapaneseHolidays.isHolidayAt(new Date(Date.UTC(date.year, date.month - 1, date.day)));
   }
 }
 
