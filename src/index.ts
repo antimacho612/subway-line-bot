@@ -17,6 +17,10 @@ const client = new messagingApi.MessagingApiClient(clientConfig);
 
 const app = createApp(client, middlewareConfig);
 
-app.listen(PORT, () => {
-  console.log(`Application is live and listening on port ${PORT}`);
-});
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`Application is live and listening on port ${PORT}`);
+  });
+}
+
+export default app;

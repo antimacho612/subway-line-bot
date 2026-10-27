@@ -1,16 +1,10 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "dist/index.js",
-      "use": "@vercel/node"
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "npm run tsc",
+  "functions": {
+    "dist/index.js": {
+      "includeFiles": "dist/**"
     }
-  ],
-  "routes": [
-    {
-      "src": "/.*",
-      "dest": "/dist/index.js",
-      "methods": ["GET", "POST"]
-    }
-  ]
+  },
+  "rewrites": [{ "source": "/(.*)", "destination": "/dist/index.js" }]
 }
