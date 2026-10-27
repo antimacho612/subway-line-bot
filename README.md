@@ -44,3 +44,13 @@ Bot から返信された時刻表メッセージから、日時を指定して�
 - 2024 年 1 月時点のデータを元にしています
 - ダイヤ改正や臨時ダイヤなどにより、実際の発車時刻と**必ずしも一致しない可能性があります**
 - 正確な時刻は、各時刻表メッセージの「札幌市交通局HP 時刻表へ」から公式サイトでご確認ください
+
+## デプロイ
+
+[Vercel](https://vercel.com/) にデプロイしています。
+
+1. Vercel のプロジェクト設定で次を設定する
+   - Node.js Version: `24.x`（`package.json` の `engines` と合わせる）
+   - 環境変数: `LINE_CHANNEL_ACCESS_TOKEN`, `LINE_CHANNEL_SECRET`
+2. デプロイ後、[LINE Developers コンソール](https://developers.line.biz/console/)の「Messaging API 設定」で Webhook URL に `https://<デプロイ先のドメイン>/webhook` を設定する
+3. 「Webhook の利用」がオンになっていることを確認し、Webhook URL の「検証」ボタンを押して「成功」と表示されることを確認する
