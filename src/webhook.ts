@@ -1,7 +1,7 @@
 import {
   JSONParseError,
-  type messagingApi,
   type MiddlewareConfig,
+  type messagingApi,
   middleware,
   SignatureValidationFailed,
   type webhook,
