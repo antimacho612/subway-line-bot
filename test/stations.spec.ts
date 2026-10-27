@@ -83,9 +83,7 @@ describe('specifyStationsByName', () => {
   });
 
   it('複数のcommonNamesに一致する場合、複数件返す', () => {
-    // 例: '大通' で複数駅が一致する場合
     const result = stations.specifyStationsByName('大通');
-    expect(Array.isArray(result)).toBe(true);
-    expect(result.length).toBeGreaterThanOrEqual(1);
+    expect(result.map((s) => s.id)).toEqual(['N07', 'T09', 'H08']);
   });
 });

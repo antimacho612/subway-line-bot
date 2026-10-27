@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "author": "antimacho612",
-  "description": "",
+  "description": "札幌市営地下鉄の駅名から発車時刻を返信するLINE Bot",
   "main": "dist/index.js",
   "scripts": {
     "format": "biome format .",

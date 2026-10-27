@@ -3,7 +3,6 @@ import * as timetables from '../src/timetables';
 import * as utils from '../src/utils';
 
 vi.mock('../src/constants/timetables', () => ({
-  __esModule: true,
   default: [
     {
       id: 'stationA',

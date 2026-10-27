@@ -21,6 +21,6 @@ export function getDiagrams(stationId: string, referenceDatetime: Date): Diagram
 
   return diagrams.map(({ direction, arrivals }) => ({
     direction,
-    arrivals: arrivals.filter(({ time }) => time >= borderTime).sort((a, b) => a.time - b.time),
+    arrivals: arrivals.filter(({ time }) => time >= borderTime),
   }));
 }
