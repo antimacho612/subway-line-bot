@@ -20,23 +20,27 @@ describe('isWeekday関数', () => {
   });
 });
 
-test('katakana2Hiragana関数', () => {
+test('katakanaToHiragana関数', () => {
   expect(
-    utils.katakana2Hiragana(
-      'ァアィイゥウェエォオカガキギクグケゲコゴサザシジスズセゼソゾタダチヂッツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミムメモャヤュユョヨラリルレロヮワヰヱヲンヴヵヶ'
+    utils.katakanaToHiragana(
+      'ァアィイゥウェエォオカガキギクグケゲコゴサザシジスズセゼソゾタダチヂッツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミムメモャヤュユョヨラリルレロヮワヰヱヲンヴ'
     )
   ).toBe(
-    'ぁあぃいぅうぇえぉおかがきぎくぐけげこごさざしじすずせぜそぞただちぢっつづてでとどなにぬねのはばぱひびぴふぶぷへべぺほぼぽまみむめもゃやゅゆょよらりるれろゎわゐゑをんゔゕゖ'
+    'ぁあぃいぅうぇえぉおかがきぎくぐけげこごさざしじすずせぜそぞただちぢっつづてでとどなにぬねのはばぱひびぴふぶぷへべぺほぼぽまみむめもゃやゅゆょよらりるれろゎわゐゑをんゔ'
   );
 });
 
-test('zenkakuNum2HankakuNum関数', () => {
-  expect(utils.zenkakuNum2HankakuNum('１２３４５６７８９０')).toBe('1234567890');
+test('katakanaToHiragana関数は「ヶ」「ヵ」を変換しない', () => {
+  expect(utils.katakanaToHiragana('ヒバリヶ丘ヵ')).toBe('ひばりヶ丘ヵ');
 });
 
-test('hankakuKana2Zenkakukana関数', () => {
+test('zenkakuNumToHankakuNum関数', () => {
+  expect(utils.zenkakuNumToHankakuNum('１２３４５６７８９０')).toBe('1234567890');
+});
+
+test('hankakuKanaToZenkakuKana関数', () => {
   expect(
-    utils.hankakuKana2Zenkakukana(
+    utils.hankakuKanaToZenkakuKana(
       'ｶﾞｷﾞｸﾞｹﾞｺﾞｻﾞｼﾞｽﾞｾﾞｿﾞﾀﾞﾁﾞﾂﾞﾃﾞﾄﾞﾊﾞﾋﾞﾌﾞﾍﾞﾎﾞﾊﾟﾋﾟﾌﾟﾍﾟﾎﾟｳﾞﾜﾞｦﾞｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜｦﾝｧｨｩｪｫｯｬｭｮ｡､ｰ｢｣･'
     )
   ).toBe(
