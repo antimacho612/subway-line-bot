@@ -40,7 +40,7 @@ export async function reply(client: ReplyClient, event: webhook.Event): Promise<
 export function createApp(client: ReplyClient, middlewareConfig: MiddlewareConfig): Application {
   const app = express();
 
-  // Testing Routing
+  // Health check
   app.get('/', (_: Request, res: Response) => {
     res.status(200).json({
       status: 'success',

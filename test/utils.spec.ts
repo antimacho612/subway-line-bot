@@ -2,14 +2,19 @@ import { describe, expect, test } from 'vitest';
 import * as utils from '../src/utils';
 
 describe('isWeekday関数', () => {
-  test('2022/1/1は祝日判定', () => {
-    expect(utils.isWeekday(new Date(2022, 0, 1))).toBe(false);
+  // 平日（月〜金）に当たる祝日・振替休日で、曜日判定ではなく祝日判定を検証する
+  test('2023/1/9（成人の日・月）は祝日判定', () => {
+    expect(utils.isWeekday(new Date(2023, 0, 9))).toBe(false);
   });
-  test('2023/1/8は祝日判定', () => {
-    expect(utils.isWeekday(new Date(2023, 0, 8))).toBe(false);
-  });
-  test('2022/3/21は祝日判定', () => {
+  test('2022/3/21（春分の日・月）は祝日判定', () => {
     expect(utils.isWeekday(new Date(2022, 2, 21))).toBe(false);
+  });
+  test('2024/11/4（振替休日・月）は祝日判定', () => {
+    expect(utils.isWeekday(new Date(2024, 10, 4))).toBe(false);
+  });
+  test('土曜・日曜は休日判定', () => {
+    expect(utils.isWeekday(new Date(2022, 0, 1))).toBe(false); // 土
+    expect(utils.isWeekday(new Date(2023, 0, 8))).toBe(false); // 日
   });
 
   test('2022/1/3は平日判定', () => {

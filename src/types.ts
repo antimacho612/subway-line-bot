@@ -8,7 +8,7 @@ export type Line = {
 
 export type Station = {
   id: string;
-  lineId: 'N' | 'T' | 'H';
+  lineId: LineId;
   officialName: string;
   commonNames: string[];
   url: string;

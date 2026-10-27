@@ -1,4 +1,4 @@
-# line-subway-bot
+# subway-line-bot
 
 ## 1. 概要
 
@@ -36,3 +36,11 @@ Botから返信された時刻表メッセージから、日時を指定して�
 ![スクリーンショット2](./screenshots/screenshot2.png)
 
 ![スクリーンショット3](./screenshots/screenshot3.png)
+
+## 3. 時刻表データについて
+
+時刻表データは、[札幌市交通局の公式サイト](https://www.city.sapporo.jp/st/subway/route_time/)に掲載されている各駅の時刻表ページ（`src/constants/stations.ts` の `url`）を元に作成しています。
+
+- データの改定日は未確認です（各駅ページのURLは `h26` パスのままで、最新かどうかは不明です）
+- ダイヤ改正や臨時ダイヤなどにより、実際の発車時刻と**必ずしも一致しない可能性があります**
+- 正確な時刻は、各時刻表メッセージの「札幌市交通局HP 時刻表へ」から公式サイトでご確認ください
