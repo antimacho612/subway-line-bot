@@ -17,6 +17,11 @@ export async function reply(client: ReplyClient, event: webhook.Event): Promise<
     return;
   }
 
+  // グループ・トークルームでは無関係な発言にも反応してしまうため、1:1 トーク以外は無視する
+  if (event.source?.type !== 'user') {
+    return;
+  }
+
   let message: messagingApi.Message;
   if (event.type === 'message' && event.message.type === 'text') {
     message = replyToTextMessage(event.message.text);
