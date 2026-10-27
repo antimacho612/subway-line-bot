@@ -2,7 +2,13 @@ import { createHmac } from 'node:crypto';
 import type { Server } from 'node:http';
 import type { AddressInfo } from 'node:net';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+import { replyToTextMessage } from '../src/reply';
 import { createApp, reply } from '../src/webhook';
+
+vi.mock('../src/reply', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../src/reply')>();
+  return { ...actual, replyToTextMessage: vi.fn(actual.replyToTextMessage) };
+});
 
 const CHANNEL_SECRET = 'test-secret';
 
@@ -25,6 +31,31 @@ describe('reply関数', () => {
     await reply({ replyMessage }, textEvent('token-1') as never);
     expect(replyMessage).toHaveBeenCalledTimes(1);
     expect(replyMessage.mock.calls[0][0].replyToken).toBe('token-1');
+  });
+
+  test('メッセージ生成で例外が起きたらフォールバックメッセージを返信する', async () => {
+    const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
+    vi.mocked(replyToTextMessage).mockImplementationOnce(() => {
+      throw new Error('boom');
+    });
+    const replyMessage = vi.fn().mockResolvedValue({});
+
+    await reply({ replyMessage }, textEvent('token-1') as never);
+
+    expect(replyMessage).toHaveBeenCalledTimes(1);
+    expect(replyMessage.mock.calls[0][0]).toEqual({
+      replyToken: 'token-1',
+      messages: [{ type: 'text', text: '時刻表の取得に失敗しました' }],
+    });
+    expect(consoleError).toHaveBeenCalled();
+    consoleError.mockRestore();
+  });
+
+  test('replyMessage 自体が失敗した場合は再送せずに例外を伝播する', async () => {
+    const replyMessage = vi.fn().mockRejectedValue(new Error('network'));
+
+    await expect(reply({ replyMessage }, textEvent('token-1') as never)).rejects.toThrow('network');
+    expect(replyMessage).toHaveBeenCalledTimes(1);
   });
 
   test('対象外のイベントは返信しない', async () => {

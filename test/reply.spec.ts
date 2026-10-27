@@ -1,6 +1,6 @@
 import type { messagingApi } from '@line/bot-sdk';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
-import { replyToOtherMessage, replyToPostbackMessage, replyToTextMessage } from '../src/reply';
+import { replyToFailure, replyToOtherMessage, replyToPostbackMessage, replyToTextMessage } from '../src/reply';
 
 const jst = (str: string) => new Date(`${str}+09:00`);
 
@@ -58,5 +58,11 @@ describe('replyToPostbackMessage', () => {
 describe('replyToOtherMessage', () => {
   test('非対応メッセージ形式を伝えるテキストを返す', () => {
     expect(replyToOtherMessage()).toEqual({ type: 'text', text: 'このメッセージ形式には対応していません' });
+  });
+});
+
+describe('replyToFailure', () => {
+  test('時刻表の取得失敗を伝えるテキストを返す', () => {
+    expect(replyToFailure()).toEqual({ type: 'text', text: '時刻表の取得に失敗しました' });
   });
 });
