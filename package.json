@@ -8,12 +8,14 @@
   "scripts": {
     "format": "biome format .",
     "lint": "biome lint .",
-    "typecheck": "tsc --noEmit --composite false",
+    "check": "biome check .",
+    "typecheck": "tsc -p tsconfig.test.json",
     "clean": "rimraf dist",
     "tsc": "tsc",
-    "build": "npm run typecheck && npm run format && npm run clean && npm run tsc",
+    "build": "npm run typecheck && npm run check && npm run test:run && npm run clean && npm run tsc",
     "start": "node --env-file-if-exists=.env .",
-    "test": "vitest"
+    "test": "vitest",
+    "test:run": "vitest run"
   },
   "dependencies": {
     "@line/bot-sdk": "^11.4.0",

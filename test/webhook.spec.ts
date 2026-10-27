@@ -43,7 +43,7 @@ describe('POST /webhook', () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
     const app = createApp({ replyMessage }, { channelSecret: CHANNEL_SECRET });
     await new Promise<void>((resolve) => {
-      server = app.listen(0, resolve);
+      server = app.listen(0, () => resolve());
     });
     baseUrl = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
   });
