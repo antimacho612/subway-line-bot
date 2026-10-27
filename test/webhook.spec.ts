@@ -10,6 +10,7 @@ function textEvent(replyToken: string, text = '東京') {
   return {
     type: 'message',
     replyToken,
+    source: { type: 'user', userId: 'U1' },
     message: { type: 'text', id: '1', text },
   };
 }
@@ -29,6 +30,27 @@ describe('reply関数', () => {
   test('対象外のイベントは返信しない', async () => {
     const replyMessage = vi.fn();
     await reply({ replyMessage }, { type: 'follow', replyToken: 'token-1' } as never);
+    expect(replyMessage).not.toHaveBeenCalled();
+  });
+
+  test.each([
+    ['グループ', { type: 'group', groupId: 'G1', userId: 'U1' }],
+    ['トークルーム', { type: 'room', roomId: 'R1', userId: 'U1' }],
+  ])('%sのイベントには返信しない', async (_, source) => {
+    const replyMessage = vi.fn();
+    await reply({ replyMessage }, { ...textEvent('token-1'), source } as never);
+    await reply({ replyMessage }, {
+      type: 'postback',
+      replyToken: 'token-2',
+      source,
+      postback: { data: 'x' },
+    } as never);
+    expect(replyMessage).not.toHaveBeenCalled();
+  });
+
+  test('source がないイベントには返信しない', async () => {
+    const replyMessage = vi.fn();
+    await reply({ replyMessage }, { ...textEvent('token-1'), source: undefined } as never);
     expect(replyMessage).not.toHaveBeenCalled();
   });
 });
