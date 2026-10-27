@@ -1,4 +1,4 @@
-import { type ClientConfig, type MiddlewareConfig, messagingApi, middleware, type WebhookEvent } from '@line/bot-sdk';
+import { type MiddlewareConfig, messagingApi, middleware, type webhook } from '@line/bot-sdk';
 import express, { type Application, type Request, type Response } from 'express';
 import { replyToOtherMessage, replyToPostbackMessage, replyToTextMessage } from './reply';
 
@@ -6,12 +6,11 @@ import 'dotenv/config';
 
 const PORT = process.env.PORT || 3000;
 
-const clientConfig: ClientConfig = {
+const clientConfig = {
   channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN || '',
 };
 
 const middlewareConfig: MiddlewareConfig = {
-  channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN || '',
   channelSecret: process.env.LINE_CHANNEL_SECRET || '',
 };
 
@@ -19,8 +18,8 @@ const client = new messagingApi.MessagingApiClient(clientConfig);
 
 const app: Application = express();
 
-async function reply(event: WebhookEvent) {
-  if (event.type !== 'message' && event.type !== 'postback') {
+async function reply(event: webhook.Event) {
+  if ((event.type !== 'message' && event.type !== 'postback') || !event.replyToken) {
     return;
   }
 
@@ -54,7 +53,7 @@ app.get('/', async (_: Request, res: Response): Promise<Response> => {
 
 // API Routing
 app.post('/webhook', middleware(middlewareConfig), async (req: Request, res: Response): Promise<Response> => {
-  const events: WebhookEvent[] = req.body.events;
+  const events: webhook.Event[] = req.body.events;
 
   const results = await Promise.all(
     events.map(async (event) => {

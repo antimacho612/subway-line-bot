@@ -12,19 +12,22 @@ const clientConfig = {
     channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN || '',
 };
 const middlewareConfig = {
-    channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN || '',
     channelSecret: process.env.LINE_CHANNEL_SECRET || '',
 };
 const client = new bot_sdk_1.messagingApi.MessagingApiClient(clientConfig);
 const app = (0, express_1.default)();
-const reply = async (event) => {
-    if (event.type !== 'message' && event.type !== 'postback')
+async function reply(event) {
+    if ((event.type !== 'message' && event.type !== 'postback') || !event.replyToken) {
         return;
+    }
     let message;
     if (event.type === 'message' && event.message.type === 'text') {
         message = (0, reply_1.replyToTextMessage)(event.message.text);
     }
-    else if (event.type === 'postback' && event.postback.params && 'datetime' in event.postback.params && event.postback.params.datetime) {
+    else if (event.type === 'postback' &&
+        event.postback.params &&
+        'datetime' in event.postback.params &&
+        event.postback.params.datetime) {
         message = (0, reply_1.replyToPostbackMessage)(event.postback.data, new Date(event.postback.params.datetime));
     }
     else {
@@ -34,7 +37,7 @@ const reply = async (event) => {
         replyToken: event.replyToken,
         messages: [message],
     });
-};
+}
 // Testing Routing
 app.get('/', async (_, res) => {
     return res.status(200).json({
