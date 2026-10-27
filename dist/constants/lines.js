@@ -1,5 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * 路線情報
+ */
 const LINES = [
     {
         id: 'N',

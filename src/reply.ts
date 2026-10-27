@@ -1,4 +1,4 @@
-import type { messagingApi, TextMessage } from '@line/bot-sdk';
+import type { messagingApi } from '@line/bot-sdk';
 import { createDiagramsMessage } from './diagramsMessage';
 import { getLineById } from './lines';
 import { specifyStationById, specifyStationsByName } from './stations';
@@ -90,7 +90,7 @@ export function replyToPostbackMessage(
   return createDiagramsMessage([stationDiagrams]);
 }
 
-export function replyToOtherMessage(): TextMessage {
+export function replyToOtherMessage(): messagingApi.TextMessage {
   return {
     type: 'text',
     text: 'このメッセージ形式には対応していません',
