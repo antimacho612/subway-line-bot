@@ -3,36 +3,44 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.hankakuKana2Zenkakukana = exports.zenkakuNum2HankakuNum = exports.katakana2Hiragana = exports.isWeekday = void 0;
+exports.isWeekday = isWeekday;
+exports.katakana2Hiragana = katakana2Hiragana;
+exports.zenkakuNum2HankakuNum = zenkakuNum2HankakuNum;
+exports.hankakuKana2Zenkakukana = hankakuKana2Zenkakukana;
 const japanese_holidays_1 = __importDefault(require("japanese-holidays"));
 /**
  * 与えられた日付が平日かどうかを判定する
  * @param date 判定対象日付
+ * @returns 平日であればtrue、休日であればfalse
  */
-const isWeekday = (date) => {
-    if (date.getDay() === 0 || date.getDay() === 6)
+function isWeekday(date) {
+    if (date.getDay() === 0 || date.getDay() === 6) {
         return false;
-    else
+    }
+    else {
         return !japanese_holidays_1.default.isHoliday(date);
-};
-exports.isWeekday = isWeekday;
+    }
+}
 /**
  * カタカナをひらがなに変換する
  * @param str 変換対象文字列
+ * @return 変換後文字列
  */
-const katakana2Hiragana = (str) => str.replace(/[\u30a1-\u30f6]/g, (m) => String.fromCharCode(m.charCodeAt(0) - 0x60));
-exports.katakana2Hiragana = katakana2Hiragana;
+function katakana2Hiragana(str) {
+    return str.replace(/[\u30a1-\u30f6]/g, (m) => String.fromCharCode(m.charCodeAt(0) - 0x60));
+}
 /**
  * 全角数字を半角数字に変換する
  * @param str 変換対象文字列
  */
-const zenkakuNum2HankakuNum = (str) => str.replace(/[０-９]/g, (s) => String.fromCharCode(s.charCodeAt(0) - 0xfee0));
-exports.zenkakuNum2HankakuNum = zenkakuNum2HankakuNum;
+function zenkakuNum2HankakuNum(str) {
+    return str.replace(/[０-９]/g, (s) => String.fromCharCode(s.charCodeAt(0) - 0xfee0));
+}
 /**
  * 半角かな文字を全角かな文字に変換する
  * @param str 変換対象文字列
  */
-const hankakuKana2Zenkakukana = (str) => {
+function hankakuKana2Zenkakukana(str) {
     const kanaMap = {
         ｶﾞ: 'ガ',
         ｷﾞ: 'ギ',
@@ -129,5 +137,4 @@ const hankakuKana2Zenkakukana = (str) => {
         .replace(reg, (m) => kanaMap[m])
         .replace(/ﾞ/g, '゛')
         .replace(/ﾟ/g, '゜');
-};
-exports.hankakuKana2Zenkakukana = hankakuKana2Zenkakukana;
+}
