@@ -8,6 +8,7 @@ import {
 } from '@line/bot-sdk';
 import express, { type Application, type NextFunction, type Request, type Response } from 'express';
 import { replyToOtherMessage, replyToPostbackMessage, replyToTextMessage } from './reply';
+import { parsePostbackDatetime } from './serviceDate';
 
 export type ReplyClient = Pick<messagingApi.MessagingApiClient, 'replyMessage'>;
 
@@ -25,7 +26,7 @@ export async function reply(client: ReplyClient, event: webhook.Event): Promise<
     'datetime' in event.postback.params &&
     event.postback.params.datetime
   ) {
-    message = replyToPostbackMessage(event.postback.data, new Date(event.postback.params.datetime));
+    message = replyToPostbackMessage(event.postback.data, parsePostbackDatetime(event.postback.params.datetime));
   } else {
     message = replyToOtherMessage();
   }

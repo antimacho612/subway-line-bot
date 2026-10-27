@@ -30,8 +30,8 @@ function createStationNotFoundMessage(): messagingApi.TextMessage {
  * @throws {Error} 線情報の取得に失敗した場合
  */
 export function replyToTextMessage(stationName: string): messagingApi.FlexMessage | messagingApi.TextMessage {
-  // 基準となる日時 = 現在日付
-  const referenceDatetime = new Date(Date.now() + (new Date().getTimezoneOffset() + 9 * 60) * 60 * 1000);
+  // 基準となる日時 = 現在時刻（JST への変換は toServiceDateTime が行う）
+  const referenceDatetime = new Date();
 
   // 駅特定
   const stations = specifyStationsByName(stationName);

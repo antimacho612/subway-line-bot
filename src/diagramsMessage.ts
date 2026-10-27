@@ -1,39 +1,44 @@
 import type { messagingApi } from '@line/bot-sdk';
+import { toServiceDateTime } from './serviceDate';
 import type { Diagram, DiagramsMessageData } from './types';
 import { isWeekday } from './utils';
 
 /**
- * 24時間表記で日時をフォーマットする
+ * 数値を指定桁数に揃えて文字列化する
+ * @param num - 数値
+ * @param len - 桁数
+ * @param fillStr - 埋める文字
+ * @returns 左を fillStr で埋めた文字列
+ */
+function padStart(num: number, len = 2, fillStr = ' '): string {
+  return num.toString().padStart(len, fillStr);
+}
+
+/**
+ * 24時間表記で日時をフォーマットする（0時台は前日の24時台として表示）
  * @param date - 日時
- * @returns フォーマット済み日時文字列（例: "06月10日（月） 24時15分"）
+ * @returns フォーマット済み日時文字列（例: " 6月10日（月） 24時15分"。月日は空白埋め）
  */
 function format24DateTime(date: Date): string {
-  const tempDatetime = new Date(date.getTime());
-  let hour = date.getHours();
-  // 0時の時は24時間表記にするために1日前に戻す
-  if (hour === 0) {
-    tempDatetime.setDate(tempDatetime.getDate() - 1);
-    hour = 24;
-  }
+  const { serviceDate, hour, minute } = toServiceDateTime(date);
 
-  const numToZeroPadStr = (num: number, len = 2, fillStr = ' ') => num.toString().padStart(len, fillStr);
-  const MM = numToZeroPadStr(tempDatetime.getMonth() + 1);
-  const DD = numToZeroPadStr(tempDatetime.getDate());
-  const DAY = ['日', '月', '火', '水', '木', '金', '土'][tempDatetime.getDay()];
-  const HH = numToZeroPadStr(hour);
-  const mm = numToZeroPadStr(tempDatetime.getMinutes(), 2, '0');
+  const MM = padStart(serviceDate.getMonth() + 1);
+  const DD = padStart(serviceDate.getDate());
+  const DAY = ['日', '月', '火', '水', '木', '金', '土'][serviceDate.getDay()];
+  const HH = padStart(hour);
+  const mm = padStart(minute, 2, '0');
 
   //M月D日（曜） H時mm分
   return `${MM}月${DD}日（${DAY}） ${HH}時${mm}分`;
 }
 
 /**
- * 時刻をフォーマットする
- * @param time - 時刻（例: 600は6時00分、2415は翌日1時15分）
+ * 時刻表の時刻をフォーマットする（0時台は24時台として表示）
+ * @param time - 時刻（例: 600は6時00分、2415は24時15分）
  * @returns フォーマット済み時刻文字列（例: "6時00分"）
  */
 function formatNumTime(time: number): string {
-  const str = (time < 2400 ? time : time - 2400).toString().padStart(4, '0');
+  const str = time.toString().padStart(4, '0');
   return `${parseInt(str.substring(0, 2), 10)}時${str.substring(2, 4)}分`;
 }
 
@@ -43,13 +48,7 @@ function formatNumTime(time: number): string {
  * @returns ダイヤ名
  */
 function getDiagramName(date: Date): string {
-  const tempDatetime = new Date(date.getTime());
-  const hour = tempDatetime.getHours();
-
-  // 0時の時は24時間表記にするために1日前に戻す
-  if (hour === 0) tempDatetime.setDate(tempDatetime.getDate() - 1);
-
-  return isWeekday(tempDatetime) ? '平日ダイヤ' : '土日祝ダイヤ';
+  return isWeekday(toServiceDateTime(date).serviceDate) ? '平日ダイヤ' : '土日祝ダイヤ';
 }
 
 /**
