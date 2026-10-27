@@ -1,6 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "npm run tsc",
+  "buildCommand": "npm run tsc && mkdir -p public",
+  "outputDirectory": "public",
   "functions": {
     "api/index.js": {
       "includeFiles": "dist/**"
