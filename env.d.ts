@@ -1,9 +1,10 @@
 declare global {
   namespace NodeJS {
     interface ProcessEnv {
-      CHANNEL_ACCESS_TOKEN: string;
-      CHANNEL_SECRET: string;
-      PORT: string;
+      LINE_CHANNEL_ACCESS_TOKEN?: string;
+      LINE_CHANNEL_SECRET?: string;
+      PORT?: string;
+      VERCEL?: string;
     }
   }
 }
