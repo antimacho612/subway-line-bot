@@ -21,7 +21,7 @@ describe('getLineById', () => {
   });
 
   it('一致しない場合はundefinedを返す', () => {
-    const invalidId = 'A' as any;
+    const invalidId = 'A' as unknown as Parameters<typeof getLineById>[0];
     const line = getLineById(invalidId);
     expect(line).toBeUndefined();
   });
