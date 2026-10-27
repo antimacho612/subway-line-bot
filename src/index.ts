@@ -1,6 +1,5 @@
-import { type MiddlewareConfig, messagingApi, middleware, type webhook } from '@line/bot-sdk';
-import express, { type Application, type Request, type Response } from 'express';
-import { replyToOtherMessage, replyToPostbackMessage, replyToTextMessage } from './reply';
+import { type MiddlewareConfig, messagingApi } from '@line/bot-sdk';
+import { createApp } from './webhook';
 
 import 'dotenv/config';
 
@@ -16,64 +15,7 @@ const middlewareConfig: MiddlewareConfig = {
 
 const client = new messagingApi.MessagingApiClient(clientConfig);
 
-const app: Application = express();
-
-async function reply(event: webhook.Event) {
-  if ((event.type !== 'message' && event.type !== 'postback') || !event.replyToken) {
-    return;
-  }
-
-  let message: messagingApi.Message;
-  if (event.type === 'message' && event.message.type === 'text') {
-    message = replyToTextMessage(event.message.text);
-  } else if (
-    event.type === 'postback' &&
-    event.postback.params &&
-    'datetime' in event.postback.params &&
-    event.postback.params.datetime
-  ) {
-    message = replyToPostbackMessage(event.postback.data, new Date(event.postback.params.datetime));
-  } else {
-    message = replyToOtherMessage();
-  }
-
-  await client.replyMessage({
-    replyToken: event.replyToken,
-    messages: [message],
-  });
-}
-
-// Testing Routing
-app.get('/', async (_: Request, res: Response): Promise<Response> => {
-  return res.status(200).json({
-    status: 'success',
-    message: 'Connected successfully!',
-  });
-});
-
-// API Routing
-app.post('/webhook', middleware(middlewareConfig), async (req: Request, res: Response): Promise<Response> => {
-  const events: webhook.Event[] = req.body.events;
-
-  const results = await Promise.all(
-    events.map(async (event) => {
-      try {
-        await reply(event);
-      } catch (e) {
-        if (e instanceof Error) {
-          console.error(e);
-        }
-
-        return res.status(500).json({ status: 'error' });
-      }
-    })
-  );
-
-  return res.status(200).json({
-    status: 'success',
-    results,
-  });
-});
+const app = createApp(client, middlewareConfig);
 
 app.listen(PORT, () => {
   console.log(`Application is live and listening on port ${PORT}`);
