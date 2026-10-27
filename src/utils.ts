@@ -14,122 +14,26 @@ export function isWeekday(date: Date): boolean {
 }
 
 /**
- * カタカナをひらがなに変換する
+ * カタカナをひらがなに変換する（地名で使う「ヶ」「ヵ」は変換しない）
  * @param str 変換対象文字列
  * @return 変換後文字列
  */
-export function katakana2Hiragana(str: string): string {
-  return str.replace(/[\u30a1-\u30f6]/g, (m) => String.fromCharCode(m.charCodeAt(0) - 0x60));
+export function katakanaToHiragana(str: string): string {
+  return str.replace(/[\u30a1-\u30f4]/g, (m) => String.fromCharCode(m.charCodeAt(0) - 0x60));
 }
 
 /**
  * 全角数字を半角数字に変換する
  * @param str 変換対象文字列
  */
-export function zenkakuNum2HankakuNum(str: string): string {
+export function zenkakuNumToHankakuNum(str: string): string {
   return str.replace(/[０-９]/g, (s) => String.fromCharCode(s.charCodeAt(0) - 0xfee0));
 }
 
 /**
- * 半角かな文字を全角かな文字に変換する
+ * 半角かな文字を全角かな文字に変換する（濁点・半濁点は直前の文字と結合する）
  * @param str 変換対象文字列
  */
-export function hankakuKana2Zenkakukana(str: string): string {
-  const kanaMap: { [key: string]: string } = {
-    ｶﾞ: 'ガ',
-    ｷﾞ: 'ギ',
-    ｸﾞ: 'グ',
-    ｹﾞ: 'ゲ',
-    ｺﾞ: 'ゴ',
-    ｻﾞ: 'ザ',
-    ｼﾞ: 'ジ',
-    ｽﾞ: 'ズ',
-    ｾﾞ: 'ゼ',
-    ｿﾞ: 'ゾ',
-    ﾀﾞ: 'ダ',
-    ﾁﾞ: 'ヂ',
-    ﾂﾞ: 'ヅ',
-    ﾃﾞ: 'デ',
-    ﾄﾞ: 'ド',
-    ﾊﾞ: 'バ',
-    ﾋﾞ: 'ビ',
-    ﾌﾞ: 'ブ',
-    ﾍﾞ: 'ベ',
-    ﾎﾞ: 'ボ',
-    ﾊﾟ: 'パ',
-    ﾋﾟ: 'ピ',
-    ﾌﾟ: 'プ',
-    ﾍﾟ: 'ペ',
-    ﾎﾟ: 'ポ',
-    ｳﾞ: 'ヴ',
-    ﾜﾞ: 'ヷ',
-    ｦﾞ: 'ヺ',
-    ｱ: 'ア',
-    ｲ: 'イ',
-    ｳ: 'ウ',
-    ｴ: 'エ',
-    ｵ: 'オ',
-    ｶ: 'カ',
-    ｷ: 'キ',
-    ｸ: 'ク',
-    ｹ: 'ケ',
-    ｺ: 'コ',
-    ｻ: 'サ',
-    ｼ: 'シ',
-    ｽ: 'ス',
-    ｾ: 'セ',
-    ｿ: 'ソ',
-    ﾀ: 'タ',
-    ﾁ: 'チ',
-    ﾂ: 'ツ',
-    ﾃ: 'テ',
-    ﾄ: 'ト',
-    ﾅ: 'ナ',
-    ﾆ: 'ニ',
-    ﾇ: 'ヌ',
-    ﾈ: 'ネ',
-    ﾉ: 'ノ',
-    ﾊ: 'ハ',
-    ﾋ: 'ヒ',
-    ﾌ: 'フ',
-    ﾍ: 'ヘ',
-    ﾎ: 'ホ',
-    ﾏ: 'マ',
-    ﾐ: 'ミ',
-    ﾑ: 'ム',
-    ﾒ: 'メ',
-    ﾓ: 'モ',
-    ﾔ: 'ヤ',
-    ﾕ: 'ユ',
-    ﾖ: 'ヨ',
-    ﾗ: 'ラ',
-    ﾘ: 'リ',
-    ﾙ: 'ル',
-    ﾚ: 'レ',
-    ﾛ: 'ロ',
-    ﾜ: 'ワ',
-    ｦ: 'ヲ',
-    ﾝ: 'ン',
-    ｧ: 'ァ',
-    ｨ: 'ィ',
-    ｩ: 'ゥ',
-    ｪ: 'ェ',
-    ｫ: 'ォ',
-    ｯ: 'ッ',
-    ｬ: 'ャ',
-    ｭ: 'ュ',
-    ｮ: 'ョ',
-    '｡': '。',
-    '､': '、',
-    ｰ: 'ー',
-    '｢': '「',
-    '｣': '」',
-    '･': '・',
-  };
-
-  const reg = new RegExp(`(${Object.keys(kanaMap).join('|')})`, 'g');
-  return str
-    .replace(reg, (m) => kanaMap[m])
-    .replace(/ﾞ/g, '゛')
-    .replace(/ﾟ/g, '゜');
+export function hankakuKanaToZenkakuKana(str: string): string {
+  return str.replace(/[｡-ﾟ]+/g, (m) => m.normalize('NFKC'));
 }
