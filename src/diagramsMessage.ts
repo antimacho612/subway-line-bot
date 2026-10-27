@@ -1,7 +1,7 @@
 import type { messagingApi } from '@line/bot-sdk';
-import { toServiceDateTime } from './serviceDate';
+import { toJstDatetimeString, toServiceDateTime } from './serviceDate';
 import type { Diagram, DiagramsMessageData } from './types';
-import { isWeekday } from './utils';
+import { getDayOfWeek, isWeekday } from './utils';
 
 /**
  * 数値を指定桁数に揃えて文字列化する
@@ -22,13 +22,13 @@ function padStart(num: number, len = 2, fillStr = ' '): string {
 function format24DateTime(date: Date): string {
   const { serviceDate, hour, minute } = toServiceDateTime(date);
 
-  const MM = padStart(serviceDate.getMonth() + 1);
-  const DD = padStart(serviceDate.getDate());
-  const DAY = ['日', '月', '火', '水', '木', '金', '土'][serviceDate.getDay()];
+  const MM = padStart(serviceDate.month);
+  const DD = padStart(serviceDate.day);
+  const DAY = ['日', '月', '火', '水', '木', '金', '土'][getDayOfWeek(serviceDate)];
   const HH = padStart(hour);
   const mm = padStart(minute, 2, '0');
 
-  //M月D日（曜） H時mm分
+  // MM月DD日（曜） HH時mm分（MM・DD・HH は空白埋め）
   return `${MM}月${DD}日（${DAY}） ${HH}時${mm}分`;
 }
 
@@ -244,6 +244,7 @@ function createFooterFlexBox(data: DiagramsMessageData): messagingApi.FlexBox {
           label: '出発日時を指定する',
           data: data.station.id,
           mode: 'datetime',
+          initial: toJstDatetimeString(data.referenceDatetime),
         },
         height: 'sm',
         color: '#0286B2',

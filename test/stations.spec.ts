@@ -70,6 +70,11 @@ describe('specifyStationsByName', () => {
 
   it('「ヶ」を含む別名（ひばりヶ丘）に到達できる', () => {
     expect(stations.specifyStationsByName('ひばりヶ丘').map((s) => s.id)).toContain('T18');
+  });
+
+  it('全角カタカナの「ケ」を含む別名（ひばりケ丘）に到達できる', () => {
+    expect(stations.specifyStationsByName('ひばりケ丘').map((s) => s.id)).toEqual(['T18']);
+    expect(stations.specifyStationsByName('ひばりケ丘駅').map((s) => s.id)).toEqual(['T18']);
     expect(stations.specifyStationsByName('ヒバリヶ丘駅').map((s) => s.id)).toContain('T18');
   });
 

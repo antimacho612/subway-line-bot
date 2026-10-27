@@ -90,4 +90,11 @@ describe('createDiagramsMessage', () => {
       expect((message.contents as messagingApi.FlexCarousel).contents).toHaveLength(2);
     });
   });
+
+  test('datetimepicker の初期値に基準日時（JST）が入る', () => {
+    const message = createDiagramsMessage([makeData('2024-06-10T00:15', [])]);
+    const bubble = (message.contents as messagingApi.FlexCarousel).contents[0];
+    const button = (bubble.footer as messagingApi.FlexBox).contents[0] as messagingApi.FlexButton;
+    expect(button.action).toMatchObject({ type: 'datetimepicker', mode: 'datetime', initial: '2024-06-10T00:15' });
+  });
 });

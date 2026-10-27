@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { parsePostbackDatetime, toServiceDateTime } from '../src/serviceDate';
+import { parsePostbackDatetime, toJstDatetimeString, toServiceDateTime } from '../src/serviceDate';
 import { isWeekday } from '../src/utils';
 
 /** JST の日時から Date を作る */
@@ -19,16 +19,14 @@ describe('toServiceDateTime', () => {
     expect(result.hour).toBe(hour);
     expect(result.minute).toBe(minute);
     expect(result.time).toBe(time);
-    expect([result.serviceDate.getFullYear(), result.serviceDate.getMonth() + 1, result.serviceDate.getDate()]).toEqual(
-      [y, m, d]
-    );
+    expect(result.serviceDate).toEqual({ year: y, month: m, day: d });
   });
 
   test('UTC の日付が JST と異なる時刻でも JST で解釈する', () => {
     // 2024-06-09T15:30Z = JST 6/10 0:30
     const result = toServiceDateTime(new Date('2024-06-09T15:30:00Z'));
     expect(result.time).toBe(2430);
-    expect(result.serviceDate.getDate()).toBe(9);
+    expect(result.serviceDate).toEqual({ year: 2024, month: 6, day: 9 });
   });
 
   test('祝日前日の0時台は祝日ではなく前日（平日）のダイヤになる', () => {
@@ -57,5 +55,17 @@ describe('parsePostbackDatetime', () => {
   test('タイムゾーン指定があればそれに従う', () => {
     expect(parsePostbackDatetime('2024-06-10T09:30:00Z').toISOString()).toBe('2024-06-10T09:30:00.000Z');
     expect(parsePostbackDatetime('2024-06-10T09:30:00+09:00').toISOString()).toBe('2024-06-10T00:30:00.000Z');
+    expect(parsePostbackDatetime('2024-06-10T09:30+0900').toISOString()).toBe('2024-06-10T00:30:00.000Z');
+  });
+
+  test('日付だけの文字列の末尾をオフセットと誤検知しない', () => {
+    expect(parsePostbackDatetime('2024-06-10').toISOString()).toBe('2024-06-09T15:00:00.000Z');
+  });
+});
+
+describe('toJstDatetimeString', () => {
+  test('JST の日時文字列に変換する', () => {
+    expect(toJstDatetimeString(new Date('2024-06-09T15:30:00Z'))).toBe('2024-06-10T00:30');
+    expect(toJstDatetimeString(jst('2024-12-31T23:59'))).toBe('2024-12-31T23:59');
   });
 });

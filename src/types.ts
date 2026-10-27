@@ -36,3 +36,12 @@ export type DiagramsMessageData = {
   referenceDatetime: Date;
   diagrams: Diagram[];
 };
+
+/** タイムゾーンを持たない年月日 */
+export type PlainDate = {
+  year: number;
+  /** 月（1〜12） */
+  month: number;
+  /** 日（1〜31） */
+  day: number;
+};
