@@ -2,9 +2,9 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "npm run tsc",
   "functions": {
-    "dist/index.js": {
+    "api/index.js": {
       "includeFiles": "dist/**"
     }
   },
-  "rewrites": [{ "source": "/(.*)", "destination": "/dist/index.js" }]
+  "rewrites": [{ "source": "/(.*)", "destination": "/api" }]
 }
